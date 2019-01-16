@@ -6,19 +6,20 @@
 #include "dataPresenter.h"
 #include "cpfValidator.h"
 
-int main()
+int main(int cpfResult)
 {
-    char personDocument[20], personBirth[10], name[50], gender[10], profession[40];
+    char personDocument[11], personBirth[10], name[50], gender[10], profession[40];
     
     setlocale(LC_ALL, "Portuguese");
     
-    printf("Bem vindo ao Cadastro FÃ¡cil!\nPor favor informe seus dados pessoais:\n");
+    printf("Bem vindo ao Cadastro Fácil!\nPor favor informe seus dados pessoais:\n");
     
     printf("Digite seu CPF: ");
     gets(personDocument);
-    if (cpfResult() = 0)
+
+    if (cpfResult = 0)
     {
-        printf("Por favor insira um CPF vÃ¡lido");
+        printf("Por favor insira um CPF válido");
     }
     
     printf("\nDigite sua data de nascimento: ");
@@ -27,11 +28,9 @@ int main()
     printf("\nDigite seu nome completo: ");
     gets(name);
     
-    printf("\nDigite seu gÃªnero: ");
+    printf("\nDigite seu gênero: ");
     gets(gender);
     
-    printf("\nDigite sua profissÃ£o: ");
+    printf("\nDigite sua profissão: ");
     gets(profession);
-
 }
-

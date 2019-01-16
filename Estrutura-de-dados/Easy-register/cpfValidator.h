@@ -9,7 +9,8 @@ int cpfValidator(char personDocument[])
     unsigned long soma;
     int j = 10, a, b;
 	
-	for (int i = 0; i < 9; i++){
+	for (int i = 0; i < 9; i++)
+    {
 		soma += j * (personDocument[i] - 48);
 		j--;
 	}
@@ -38,4 +39,5 @@ int cpfValidator(char personDocument[])
 	else
         cpfResult = 0;
     return cpfResult;
+    
 }
