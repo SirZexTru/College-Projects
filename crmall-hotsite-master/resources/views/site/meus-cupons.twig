@@ -1,0 +1,132 @@
+{% extends "site/layout/layout.twig" %}
+{% block title %} | Meus Cupons {% endblock %}
+
+{% block content %}
+
+    {% include '/site/partials/btn-coupon.twig' %}
+
+    <div id="welcome-user">
+        <div class="text-center" style="margin: 48px 0px;">
+            <p style="font-size: 36px;" class="text-uppercase">
+                Olá, <span class="purple">{{ app.user.name }}</span>
+                {% for message in app.session.getFlashBag.get('newUserSuccess') %}
+                    <br>{{ message }}
+                {% endfor %}
+            </p>
+
+            {{ app.campaignFinished?'<p style="font-size: 18px;">O período de cadastro de cupons está encerrado</p>':'' }}
+
+            {% if(maxLuckyCounter()) %}
+                <div class="info">
+                    <p>
+                        Você já está participando com o número máximo de {{ app.campaignMaxLuckyCounter }} números da sorte<br>
+                        Confira o <strong><a href="/regulamento">regulamento</a></strong>
+                    </p>
+                </div>
+            {% endif %}
+
+            <p style="font-size: 18px;">Confira os seus cupons e não se esqueça de continuar participando.</p>
+            <p>
+                Guarde a nota de sua compra. Ela será solicitada caso você seja sorteado.
+            </p>
+        </div>
+
+        <h3 class="text-center text-uppercase">
+            <span class="coupon-count-text">Total de cupons</span>
+            <span class="coupon-count">{{ numbers.total }}</span>
+        </h3>
+
+        {% if numbers.data|length > 0 %}
+            <h2 class="text-center text-uppercase" style="font-size: 20px; margin-bottom: 24px;">Seus cupons</h2>
+
+            <div style="position: relative">
+                <div class="loader" style="display: none">
+                    <img src="/img/loader.svg" alt="">
+                </div>
+                <div class="coupons-list">
+                    <div class="list">
+                        {% for item in numbers.data %}
+                            <div class="coupon text-center">
+                            <span class="coupon-number">
+                                {{ item.benefitID }}
+                            </span>
+                                <small>{{ item.createdDateTime|date('d/m/Y') }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if numbers.total > 50 %}
+                        <div class="text-center" style="margin-top: 25px">
+                            <button type="button" class="btn btn-default" data-next="{{ numbers.currentPage + 1 }}" data-limit="{{ numbers.limit }}" id="show-more-cupons">Mostrar mais</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="text-center">
+        <a href="/meus-cupons/notas-enviadas" class="btn btn-success btn-lg" style="margin-top: 50px;">Notas enviadas</a>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function onReady() {
+            scrollPage('welcome-user');
+        }
+
+        $(document).ready(onReady);
+
+        $('#show-more-cupons').click(function(){
+            let elem = $(this);
+
+            $('.loader').show();
+
+            const request  = $.ajax({
+                type: "GET",
+                url: '/meus-cupons/' + elem.data('limit') + '/' + elem.data('next'),
+                contentType: false,
+                processData: false,
+                dataType: "json"
+            });
+
+            request.then(function(response) {
+                if(response.cod !== 200) {
+                    elem.remove();
+                } else {
+                    if(response.data.currentPage == response.data.lastPage) {
+                        elem.remove();
+                    }else {
+                        elem.data('limit', response.data.limit);
+                        elem.data('next', response.data.currentPage + 1);
+                    }
+
+                    var coupons = response.data.data;
+
+                    $('<hr>').appendTo('.list');
+
+                    for(var i = 0; i < coupons.length; i ++){
+                        var date = moment(coupons[i].createdDateTime).format('dd/mm/YYYY');
+
+                        var item = '<div class="coupon text-center">' +
+                            '    <span class="coupon-number">' +
+                            coupons[i].benefitID +
+                            '    </span>' +
+                            '    <small>' + date + '</small>' +
+                            '</div>';
+
+                        $(item).appendTo('.list');
+                    }
+                }
+            });
+
+            request.always(function() {
+                $('.loader').hide();
+            });
+
+        });
+
+    </script>
+{% endblock %}

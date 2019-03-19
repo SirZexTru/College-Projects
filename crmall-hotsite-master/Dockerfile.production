@@ -1,0 +1,64 @@
+FROM php:7.1-fpm
+
+LABEL maintainer="web@crmall.com"
+
+WORKDIR "/application"
+
+# Set environment variables
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# add credentials on build
+ARG ssh_private_key
+ARG ssh_public_key
+
+RUN apt-get update \
+    && apt-get install -y \
+    curl \
+    git \
+    gnupg \
+    libpng-dev \
+    zlib1g-dev \
+    libicu-dev \
+    libcurl4-openssl-dev \
+    libmcrypt-dev
+
+# Authorize SSH Host
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    ssh-keyscan git.crmall.com > /root/.ssh/known_hosts
+
+# Add the keys and set permissions
+RUN echo "$ssh_private_key" > /root/.ssh/id_rsa && \
+    echo "$ssh_public_key" > /root/.ssh/id_rsa.pub && \
+    chmod 600 /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa.pub
+
+# Install PHP extensions and NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && apt-get install -y \
+        nodejs \
+    && docker-php-ext-install \
+      gd \
+      intl \
+      json \
+      mbstring \
+      mcrypt \
+      zip \
+      opcache \
+    && docker-php-ext-configure intl \
+    && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
+    && apt-get remove -y --purge software-properties-common \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV TZ America/Sao_Paulo
+
+COPY phpdocker/php-fpm/php-ini-overrides.ini /etc/php/7.1/fpm/conf.d/99-overrides.ini
+
+#Copy application
+COPY . ./
+
+RUN composer install --no-interaction -o && npm install && npm run prod
+
+RUN cp .env.example .env

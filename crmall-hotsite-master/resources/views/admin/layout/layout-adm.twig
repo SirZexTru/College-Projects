@@ -1,0 +1,65 @@
+{% spaceless %}
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+        <title>{{ app.campaignName }} {% block title %}{% endblock %}</title>
+
+        <link rel="stylesheet" type="text/css" href="{{ webpackAsset('/css/vendor.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ webpackAsset('/css/layout-admin.css') }}">
+
+        <link rel="shortcut icon" href="/img/logo.svg" type="image/x-icon">
+        <link rel="icon" href="/img/logo.svg" type="image/x-icon">
+
+        {% block styles %}
+        {% endblock %}
+    </head>
+    <body class="content" style="margin-top: 0px">
+    {% if app.admin %}
+        <nav id="main-menu" class="navbar aboveAll" style="border-bottom: solid  1px">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed menuMobileBtn" data-toggle="collapse" data-target="#main-menu-navbar-collapse" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div id="main-menu-navbar-collapse" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/adm/ganhadores">Ganhadores</a></li>
+                        <li><a href="/adm/notas-por-sorteio">Notas por número sorteado</a></li>
+                        <li><a href="/adm/logout">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+
+    <div class="container main-container" style="margin-top: 50px">
+        <div class="col-md-offset-5 col-md-2" style="margin-bottom: 50px">
+            <a class="logo-admin" href="/">
+                <img src="/img/logo.svg" class="logo" style="width: 100%;">
+            </a>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block modal %}
+    {% endblock %}
+
+    <script src="{{ webpackAsset('/js/vendor.js') }}"></script>
+    <script src="{{ webpackAsset('/js/admin.js') }}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+    </body>
+    </html>
+{% endspaceless %}

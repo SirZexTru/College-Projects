@@ -1,0 +1,231 @@
+{% extends "site/layout/layout.twig" %}
+{% block title %} | Cadastro{% endblock %}
+{% block content %}
+    <div id="register-container" class="blocks-container block-register">
+        <div class="col-12">
+            <div>
+                <h3>CADASTRE-SE</h3>
+            </div>
+        </div>
+        <div class="col-12" style="margin-bottom: 50px;">
+            <div class="block-description">
+                <p>
+                    Você pode participar desta promoção fornecendo as informações necessárias através deste formulário de inscrição.<br>
+                    Você concorda que tais informações serão registas pelo <a href="/regulamento" target="_blank"><strong>Regulamento da promoção</strong></a>.
+                    Não deixe de ler as regras que regem esta promoção antes de se cadastrar.
+                </p>
+            </div>
+        </div>
+
+        <div class="alert alert-warning alert-dismissible" role="alert" id="message-save-user" {{ registerError == '' ? 'style="display: none;"' : '' }}>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {% if registerError %}
+                <p class="message">{{ registerError }}</p>
+            {% endif %}
+        </div>
+
+        <div class="text-center">
+            <a href="/user/login" class="btn btn-success btn-lg" style="margin-bottom: 50px;">Já sou Cadastrado</a>
+        </div>
+
+        <div class="col-12 form-container">
+            <div class="loader hide">
+                <img src="/img/loader.svg" alt="">
+            </div>
+            <form autocomplete="off" class="form-validate" method="post" action="/user/new-user" id="user-new" style="padding-bottom: 15px">
+                <div class="row">
+                    {% if 'cpf' in app.registerFormFields %}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>CPF *</label>
+                                <input class="form-control mask-cpf" name="cpf" placeholder="000.000.000-00" required id="cpf">
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'birthDate' in app.registerFormFields %}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Data de nascimento *</label>
+                                <input class="form-control mask-date" name="birthDate" placeholder="00/00/0000" required id="birthDate">
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'rg' in app.registerFormFields %}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>RG</label>
+                                <input class="form-control" name="rg" placeholder="Digite seu RG" id="rg">
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    {% if 'name' in app.registerFormFields %}
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="display-block">Nome completo *</label>
+                            <input class="form-control" name="personName" placeholder="Digite seu nome completo" required>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    {% if 'gender' in app.registerFormFields %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Gênero *</label>
+                                <select name='gender' class="form-control" required>
+                                    <option value="">---</option>
+                                    {% for key,state in gender %}
+                                        <option value="{{ key }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if 'maritalStatus' in app.registerFormFields %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Estado Civil *</label>
+                                <select name='maritalStatus' class="form-control" required>
+                                    <option value="">---</option>
+                                    {% for key,state in maritalStatus %}
+                                        <option value="{{ key }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    {% if 'email' in app.registerFormFields %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>E-mail *</label>
+                                <input class="form-control" type="email" id="email-check" name="email" placeholder="Digite seu e-mail" required>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if 'cel' in app.registerFormFields %}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="display-block">Telefone de contato *</label>
+                                <input class="form-control mask-phone" name="cellPhone" placeholder="(00)00000-0000" required>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if 'address' in app.registerFormFields %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">CEP *</label>
+                                <input class="form-control mask-cep cep" type="text" name="cep" placeholder="Digite seu CEP" required data-cep="PF">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Cidade *</label>
+                                <input class="form-control" type="text" name="city" placeholder="Digite sua cidade" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Estado *</label>
+                                <select name="state" class="form-control" required>
+                                    <option value="">---</option>
+                                    {% for key,state in statesAllowed %}
+                                        <option value="{{ key }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">Endereço *</label>
+                                <input class="form-control" type="text"  name="streetName" placeholder="Digite seu endereço" required>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">Bairro *</label>
+                                <input class="form-control" type="text" name="neighborhood" placeholder="Digite seu bairro" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control-label">Número *</label>
+                                <input class="form-control" type="text" name="number" required placeholder="Nº">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Complemento</label>
+                                <input class="form-control" type="text" name="complement" placeholder="Complemento">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr>
+                        <div class="form-group">
+                            <label>Senha *</label>
+                            <input class="form-control" type="password" minlength="6" maxlength="12" name="password" id="password" placeholder="Digite sua senha" required>
+                        </div>
+                        <div>
+                            <p>Sua senha deve conter de 6 a 12 dígitos, com uma combinação de letras/números</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Confirmar senha *</label>
+                            <input class="form-control" type="password" minlength="6" name="confirmPassword" equalTo="#password" placeholder="Confirme sua senha" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class='custom-check'>
+                            <input type="checkbox" name="acceptPromotionRules" id="acceptPromotionRules" required/>
+                            <label for="acceptPromotionRules">
+                                <span class="check"></span>
+                                <strong>Li e aceito o <a href="/regulamento" target="_blank">Regulamento da Promoção</a></strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 buttons">
+                        <button type="button" id="cancel-button" class="btn btn-large btn-default cancel-btn">Cancelar</button>
+                        <button class="btn btn-large btn-success disabled ladda-button" disabled id="user-register-send-btn">Enviar cadastro</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/user.js"></script>
+{% endblock %}

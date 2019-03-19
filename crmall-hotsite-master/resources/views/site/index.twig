@@ -1,0 +1,22 @@
+{% extends "site/layout/layout.twig" %}
+
+{% block content %}
+    {% if app.user %}
+        {% include '/site/partials/btn-coupon.twig' %}
+    {% else %}
+        <div class="sign-in">
+            <div class="flex-item purple">
+                <img src="/img/arrow-01.png" alt="" class="hide-sm">
+                <div>
+                    <span class="arrows">Cadastre-se </span>
+                    <a href="/user/cadastro" class="scale-effect bg-link">Aqui</a>
+                </div>
+                <img src="/img/arrow-02.png" alt="">
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ webpackAsset('/js/home.js') }}"></script>
+{% endblock %}

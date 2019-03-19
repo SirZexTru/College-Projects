@@ -1,0 +1,49 @@
+{% extends "site/layout/layout.twig" %}
+{% block title %} | Ganhadores {% endblock %}
+{% block content %}
+    <div class="blocks-container block-winners" id="winners-container">
+        <div class="col-12 head-container">
+            <div class="text-center">
+                <h2>CONFIRA OS SORTEADOS DA PROMOÇÃO</h2>
+                <p class="head-subtitle col-8">
+                    Parabéns aos sorteados!<br>
+                </p>
+            </div>
+        </div>
+
+        <div class="flex-container">
+            <div class="col-12 flex-item">
+                <div class="winners-table-container">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="table-header">
+                                <th>SORTEIO</th>
+                                <th>NOME DO SORTEADO</th>
+                                <th>PRÊMIO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for winner in winners %}
+                                <tr>
+                                    <td>{{ winner[0] }}</td>
+                                    <td>{{ winner[1] }}</td>
+                                    <td>{{ winner[2] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function () {
+            scrollPage('winners-container');
+        });
+
+        $("tbody tr:odd").css({"background-color":"rgba(212, 212, 212, 0.36)"});
+    </script>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends "site/layout/layout.twig" %}
+{% block title %} | Cadastrar meus cupons {% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ webpackAsset('/css/products_coupons.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-12" id="new-coupon">
+        <div class="flex-item">
+            <h2>CADASTRE SUA NOTA</h2>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="flex-item info-upload" style="flex-direction: column; max-width: 85%; margin: 0 auto">
+            <p>
+                Adicione a foto da sua nota abaixo e em seguida informe os dados da nota como mostra a imagem ilustrativa.
+                <br> Em até uma semana seus cupons serão gerados.
+            </p>
+            <p>
+                Confira o <a href="/regulamento" target="_blank">REGULAMENTO</a> antes de enviar suas notas.
+            </p>
+            <p>
+                Guarde a nota de sua compra. Ela será solicitada caso você seja sorteado.
+            </p>
+            <span style="color: #fdaa4e">ATENÇÃO:</span>
+            - Sala VIP American Airlines: Substituir o número do cupom fiscal pelo número do “Stock Control”. <br>
+            - Sala VIP GOL: Substituir o número do cupom fiscal pelo número do recibo de pagamento.
+            </p>
+        </div>
+    </div>
+
+    <div class="blocks-container block-register-coupon" id="register-coupon-container">
+        <div class="loader" style="display: none">
+            <img src="/img/loader.svg" alt="">
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning hide" role="alert" id="message-coupon-max">
+                    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+                    <p class="message"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <img src="/img/invoice-example.png" alt="" style="max-width: 100%; margin: 0 auto; display: list-item;">
+            </div>
+        </div>
+
+        <form autocomplete="off" id="invoice-form" action="/meus-cupons/send-coupons" method="post" novalidate="novalidate" onkeypress="return event.keyCode !== 13;">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class='form-group previewImage' style="display: none; text-align: center; margin-top: 15px;">
+                        <div class="image-container">
+                            <button type="button" class="close" id="close-image-preview"><span aria-hidden="true">&times;</span></button>
+                            <img id="previewImage" src=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group" style="text-align: center; margin-top: 30px;">
+                        <input type="file" id="image" name="image" class="form-control" required style="display: none" accept="image/*">
+                        <button id="add-image" type="button" class="btn btn-success text-uppercase custom-btn btnSubmitInvoice btn-large btn-add-image" style="position: relative;">Adicionar imagem</button>
+                    </div>
+                    <div class="text-center image-info">
+                        <p>Tamanho máximo permitido da imagem é de 5MB <br>
+                            Extensões permitidas JPG | JPEG | PNG</p> <br>
+                    </div>
+                    <div id="fileSizeMax" class="text-center" style="display: none;">
+                        <span class="error">Tamanho máximo excedido, informe uma imagem com tamanho menor que 5MB</span>
+                    </div>
+                    <div id="extensionInvalid" class="text-center" style="display: none;">
+                        <span class="error">Extensão inválida, por favor informe uma imagem com extensão JPG | JPEG | PNG</span>
+                    </div>
+                    <div id="imageRequired" class="text-center" style="display: none;">
+                        <span style="font-size: 16px;" class="error">Por favor, informe a imagem do cupom fiscal</span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="custom-label">Loja*</label>
+                        <input type="text" id="storeDocumentNumber" name="storeDocumentNumber" class="form-control cnpj-mask" placeholder="Digite o CNPJ de onde realizou a compra" required>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="custom-label">Nome da loja*</label>
+                        <input type="text" id="storeName" name="storeName" class="form-control" placeholder="Nome da loja onde realizou a compra" required readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="custom-label">Data da Compra *</label>
+                        <input name="date" id="boughtDate" class="form-control date-mask" br-date placeholder="Digite a data da compra" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="custom-label">Número do Cupom Fiscal *</label>
+                        <input name="code" class="form-control" placeholder="Digite o número do Cupom Fiscal" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="custom-label">Valor do Cupom Fiscal *</label>
+                        <input name="value" id="receiptValue" class="form-control money-mask" placeholder="Digite o valor total do Cupom Fiscal" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="custom-label">Número do voo <small style="color: #838383d1;">(somente os números)</small> </label>
+                        <input name="flight" type="number" class="form-control" placeholder="Digite o número do voo">
+                    </div>
+                </div>
+            </div>
+
+            {% if app.campaignSendProducts %}
+                <div class="row productSelectionContainer" style="margin-bottom: 20px;">
+                    <div class="col-lg-6 col-sm-12 col-xs-8 searchBlock">
+                        <div class="form-group">
+                            <label class="custom-label" for="productSearch">Digite o nome do produto ou código de barras *</label>
+                            <select id="productSearch" name="productSearch" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-lg-offset-0 col-sm-4 col-sm-offset-4 col-xs-4 quantityBlock">
+                        <div class="form-group">
+                            <label class="custom-label">Quantidade *</label>
+                            <div class="quantityContainer">
+                                <div class="minus disabled noTextSelect">-</div>
+                                <div class="quantityNumber">
+                                    <input type="number" name="quantity" id="quantityNumber" title="Somente números" class="form-control" min="0" disabled>
+                                </div>
+                                <div class="plus disabled noTextSelect">+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="custom-label">Valor unitário *</label>
+                            <input id="productValue" name="productValue" class="form-control money-mask" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-lg-offset-0 col-sm-6 col-sm-offset-3 col-xs-12 btnAddProductContainer">
+                        <a href="javascript:void(0);" id="btnAddProduct" class="btn btn-success custom-btn pull-right btnAddProduct" disabled>Incluir produto(s) no cadastro</a>
+                    </div>
+                </div>
+
+                <div class="row" id="products-list"></div>
+
+                <div class="row productSelectionContainer result" style="display: none">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p>
+                            Total de produtos: <strong id="totalProducts"></strong>
+                        </p>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p>
+                            Valor Total: R$ <strong id="totalValue"></strong>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+                    <p>Com qual aeroporto você vai viver sua próxima viagem?</p>
+
+                    <div id="questionRequired" class="text-center" style="display: none;">
+                        <span style="font-size: 16px;" class="error">Por favor, responda corretamente o questionário</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='custom-check'>
+                        <input type="radio" name="question" id="question-right" required value="riogaleao"/>
+                        <label for="question-right">
+                            <span class="check"></span>
+                            <strong>RIOgaleão</strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='custom-check'>
+                        <input type="radio" name="question" id="question-wrong" required value="outros"/>
+                        <label for="question-wrong">
+                            <span class="check"></span>
+                            <strong>Outros</strong>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-12 btnSubmitContainer pull-right">
+                            <div class="form-group">
+                                <button id="send-button" class="btn btn-success text-uppercase custom-btn pull-right btnSubmitInvoice btn-large" style="position: relative;">Concluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div id="dialog" class="modal fade coupon-modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" style="z-index: 10500;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Cadastro de cupons</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Seus cupons foram cadastrados com sucesso!</p>
+                </div>
+                <div class="modal-footer">
+                   <a id="form-reset-buttom" href="/meus-cupons/cadastrar"
+                      class="btn btn-xs visible-xs-block visible-sm-inline-block
+                     visible-md-inline-block visible-lg-inline-block btn-default">
+                       Cadastrar mais notas
+                   </a>
+                   <a href="/meus-cupons/notas-enviadas" class="btn btn-xs visible-xs-block visible-sm-inline-block
+                 visible-md-inline-block visible-lg-inline-block btn-success">
+                       Visualizar minhas notas
+                   </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dialog-fail" class="modal fade coupon-modal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" style="z-index: 10500;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Cadastro de cupons</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Ocorreu um erro ao cadastrar os cupons. Deseja tentar cadastrá-los novamente?</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/meus-cupons/notas-enviadas" class="btn btn-xs visible-xs-block visible-sm-inline-block
+                             visible-md-inline-block visible-lg-inline-block btn-default">
+                        Não
+                    </a>
+                    <a href="/meus-cupons/cadastrar" type="button" class="btn btn-xs visible-xs-block visible-sm-inline-block
+                     visible-md-inline-block visible-lg-inline-block btn-primary">
+                        Sim
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>var hasProductsList = {{ app.campaignSendProducts?'true':'false' }};</script>
+    <script src="{{ webpackAsset('/js/products_coupons.js') }}"></script>
+{% endblock %}

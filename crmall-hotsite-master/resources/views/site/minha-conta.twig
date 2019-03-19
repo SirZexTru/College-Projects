@@ -1,0 +1,221 @@
+{% extends "site/layout/layout.twig" %}
+{% block title %} | Minha Conta{% endblock %}
+{% block styles %}
+    <style>
+        .button-loader {
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="block-register" id="register-container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Minha Conta</h3>
+            </div>
+        </div>
+        <div class="my-account" style="margin-top: 40px;">
+            {% for message in app.session.getFlashBag.get('message') %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p>
+                        {{ message }}
+                    </p>
+                </div>
+            {% endfor %}
+            {% for error in app.session.getFlashBag.get('error') %}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p>
+                        {{ error }}
+                    </p>
+                </div>
+            {% endfor %}
+
+            <div class="block-register form-container">
+                <form autocomplete="off" class="form-validate" method="post" action="/user/edit" id="editUser" style="width: 100%">
+                    <div class="row">
+                        {% if 'cpf' in app.registerFormFields %}
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>CPF *</label>
+                                    <input class="form-control mask-cpf" name="cpf" placeholder="000.000.000-00" required readonly id="cpf" value="{{ person.documentNumber }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if 'birthDate' in app.registerFormFields %}
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Data de nascimento *</label>
+                                    <input class="form-control mask-date" name="birthDate" placeholder="00/00/0000" readonly required id="birthDate" value="{{ person.day }}/{{ person.month }}/{{ person.year }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if 'rg' in app.registerFormFields %}
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>RG</label>
+                                    <input class="form-control" name="rg" placeholder="Digite seu RG" id="rg" value="{{ person.otherDocument }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        {% if 'name' in app.registerFormFields %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="display-block">Nome completo *</label>
+                                    <input class="form-control" name="personName" placeholder="Digite seu nome completo" required value="{{ person.name }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        {% if 'gender' in app.registerFormFields %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Genêro *</label>
+                                    <select name='gender' class="form-control" required>
+                                        {% for key,state in gender %}
+                                            <option {{ person.gender == key ? 'selected' : '' }} value="{{ key }}">{{ state }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if 'maritalStatus' in app.registerFormFields %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Estado Civil *</label>
+                                    <select name='maritalStatus' class="form-control" required>
+                                        <option value="">---</option>
+                                        {% for key,state in maritalStatus %}
+                                            <option {{ person.maritalStatus == key ? 'selected' : '' }} value="{{ key }}">{{ state }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        {% if 'email' in app.registerFormFields %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>E-mail *</label>
+                                    <input class="form-control" type="email" id="email-check" name="email" placeholder="Digite seu e-mail" required value="{{ person.passwordRecoveryEmail }}">
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if 'cel' in app.registerFormFields %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="display-block">Telefone de Contato *</label>
+                                    <input class="form-control mask-phone" name="cellPhone" placeholder="(00)00000-0000" required value="{{ person.cellPhone }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if 'address' in app.registerFormFields %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">CEP *</label>
+                                    <input class="form-control mask-cep cep" type="text" name="cep" placeholder="Digite seu CEP" required value="{{ person.address.zipCode }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Cidade *</label>
+                                    <input class="form-control" type="text" name="city" placeholder="Digite sua cidade" required value="{{ person.address.city }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Estado *</label>
+                                    <select name="state" class="form-control" required>
+                                        <option value="">---</option>
+                                        {% for key,state in statesAllowed %}
+                                            <option {{ person.address.state == key ? 'selected' : '' }} value="{{ key }}">{{ state }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Endereço *</label>
+                                    <input class="form-control" type="text"  name="streetName" placeholder="Digite seu endereço" required value="{{ person.address.address }}">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Bairro *</label>
+                                    <input class="form-control" type="text" name="neighborhood" placeholder="Digite seu bairro" required value="{{ person.address.neighborhood }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Número *</label>
+                                    <input class="form-control" type="text" name="number" required placeholder="Nº" value="{{ person.address.number }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Complemento</label>
+                                    <input class="form-control" type="text" name="complement" placeholder="Complemento" value="{{ person.address.complement }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <div class="form-group">
+                                <label for="email-check">Nova senha</label>
+                                <input class="form-control" type="password" minlength="6" name="password" id="password" placeholder="Nova senha">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email-check">Confirme sua nova senha</label>
+                                <input class="form-control" type="password" minlength="6" name="confirmPassword" equalTo="#password" placeholder="Confirme sua nova senha">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="col-md-12 text-right">
+                        <button id="save-user" class="btn btn-success ladda-button">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ webpackAsset('/js/user.js') }}"></script>
+    <script>validInputs.email = true;</script>
+{% endblock %}

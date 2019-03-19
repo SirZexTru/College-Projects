@@ -1,0 +1,13 @@
+.DS_Store
+.idea
+.env
+!/data/log/README.md
+!/data/README.md
+data/
+vendor/
+node_modules/
+composer.phar
+.php_cs.cache
+npm-debug.log
+hotsites-dist
+public/files/ganhadores/ganhadores*

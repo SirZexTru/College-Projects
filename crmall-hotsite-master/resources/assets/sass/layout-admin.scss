@@ -1,0 +1,332 @@
+@import "variables";
+
+$input-border-radius:  0px;
+$input-border:         $secondary-font-color;
+$input-height-base:    40px;
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+$main-color: $general-font-color;
+$label-color: black;
+$text-color: $body-bg-color;
+$highlight-color: $general-font-color;
+$expanded-line-bg-color: $secondary-font-color;
+$line-background: $secondary-font-color;
+$btn-action-bg: $body-bg-color;
+$line-highlight-color: $secondary-font-color;
+$btn-brand-radius: 5px;
+$screen-xlg-desktop: 1393px;
+$admin-bg: $body-bg-color;
+
+$admn-link-color: $menu-font-color;
+
+.navbar {
+  background-color: $menu-bg-color;
+
+  .navbar-nav {
+    li {
+      &:hover {
+        cursor: pointer;
+      }
+
+      a {
+        color: $admn-link-color;
+
+        &:hover {
+          text-decoration: none !important;
+          background-color: transparent !important;
+          color: $secondary-font-color !important;
+        }
+      }
+    }
+  }
+}
+
+.content {
+  background-color: $admin-bg;
+  margin-top: 150px;
+
+  #errorLogin {
+    color: $main-color;
+  }
+
+  .main-container {
+    color: white;
+    position: relative;
+
+    .form-control {
+      border: 2px solid $secondary-font-color;
+
+      &::placeholder {
+        color: black;
+        opacity: 1;
+      }
+    }
+
+    label {
+      color: $label-color;
+    }
+
+    .audit {
+      label {
+        color: #FFF;
+      }
+    }
+
+    .text-red {
+      color: $general-font-color;
+    }
+
+    .saveWinnerModal,
+    .removeWinnerModal {
+      .modal-content {
+        .modal-body {
+          overflow-wrap: break-word;
+        }
+      }
+    }
+
+    .winnersAccordions {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-top: 50px;
+
+      .accordion {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        margin-bottom: 15px;
+
+        .lotteryLine {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          height: 50px;
+
+          background-color: $main-color;
+          color: $text-color;
+          cursor: pointer;
+
+          &.generalCampaignLine {
+            color: $text-color;
+
+            .lotteryTitle {
+              &.highlighted {
+                color: $text-color;
+              }
+            }
+
+            &.lineBg {
+              background-color: $line-background;
+            }
+
+            &.lineBg::before,
+            &.lineBg::after
+            {
+              background-color: $line-background;
+            }
+          }
+
+          &::before,
+          &::after
+          {
+            content: "";
+            border-radius: 50%;
+            background-color: $main-color;
+            width: 40px;
+            height: 100%;
+          }
+
+          &::before {
+            margin-left: -15px;
+            left: 0;
+          }
+
+          &::after {
+            margin-right: -15px;
+            right: 0;
+          }
+
+          &.lineBg {
+            background-color: $general-font-color;
+          }
+
+          &.lineBg::before,
+          &.lineBg::after
+          {
+            background-color: $general-font-color;
+          }
+
+          .highlighted {
+            color: $highlight-color;
+          }
+
+          .lotteryTextContainer {
+            padding-right: 15px;
+          }
+        }
+
+        .lotteryExpandBtnContainer,
+        .btnActionContainer {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 0;
+
+          .btn-circle {
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            border: 0;
+            background-color: $btn-action-bg;
+            color: $secondary-font-color;
+            padding: 0 !important;
+            padding-top: 1px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-size: 16px;
+            outline: none;
+
+            &.generalCampaignBtnBg {
+              background-color: $body-bg-color;
+            }
+          }
+        }
+
+        @media(max-width: $screen-xs-max) {
+          padding: 0;
+        }
+
+        .lotteryWinnersContainer {
+          border: 2px solid #da0811;
+          border-top: none;
+          background-color: $expanded-line-bg-color;
+
+          &.campaignGeneral {
+            border: 2px solid $body-bg-color;
+            background-color: $expanded-line-bg-color;
+
+            color: $text-color;
+          }
+
+          #lineForm {
+            input {
+              border: 1px solid $body-bg-color;
+              border-radius: unset !important;
+            }
+          }
+
+          table {
+            width: 90%;
+            margin: auto;
+            margin-bottom: 15px;
+
+            thead {
+              th {
+                padding: 0 10px;
+              }
+            }
+
+            tr {
+              line-height: 50px;
+              background-color: transparent;
+              -webkit-transition: background-color 2000ms linear;
+              -ms-transition: background-color 2000ms linear;
+              transition: background-color 2000ms linear;
+
+              &.lineForm {
+                td {
+                  padding: 10px;
+                }
+              }
+
+              &.highlighted {
+                background-color: $line-highlight-color;
+              }
+
+              &.fadeBackground {
+                background-color: $line-highlight-color;
+              }
+
+              td {
+                padding: 10px;
+                max-width: 120px;
+                word-break: break-word;
+
+                input {
+                  width: 90%;
+                }
+              }
+            }
+          }
+
+        }
+      }
+
+      @media(max-width: $screen-xs-max) {
+        margin: auto;
+      }
+    }
+  }
+
+  .btn {
+    font-weight: 400;
+    border-radius: $btn-brand-radius;
+
+    &.btn-success {
+      background-color: $secondary-font-color;
+      color: $admin-bg;
+      border: none;
+      padding: 13px 43px;
+    }
+
+    &.btn-default {
+      color: $admin-bg;
+      border: none;
+      padding: 13px 43px;
+    }
+  }
+}
+
+.container {
+  @media (min-width: $screen-xlg-desktop) {
+    width: $screen-xlg-desktop - $grid-gutter-width;
+  }
+}
+
+.receipt-detail {
+  padding: 15px;
+  background: #ffe9c0;
+  color: #000;
+  border-radius: 5px;
+  position: relative;
+  margin-bottom: 15px;
+
+  p {
+    //display: inline-block;
+  }
+}
+
+.loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(#fff, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+
+  &.hide {
+    display: none;
+  }
+
+  img {
+    display: block;
+    position: relative;
+    width: 100px;
+  }
+}
