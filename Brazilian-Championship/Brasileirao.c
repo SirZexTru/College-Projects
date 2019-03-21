@@ -33,7 +33,27 @@ struct tableData finalResultTable;
 
 char insertValuesOnTable()
 {
-    finalResultTable.name[0] = "São paulo"; 
+    finalResultTable.name[0] = "São paulo";
+    finalResultTable.name[1] = "Atlético";
+    finalResultTable.name[2] = "Atlético";
+    finalResultTable.name[3] = "Avaí";
+    finalResultTable.name[4] = "Bahia";
+    finalResultTable.name[5] = "Botafogo";
+    finalResultTable.name[6] = "Ceará";
+    finalResultTable.name[7] = "Chapecoense";
+    finalResultTable.name[8] = "Corinthians";
+    finalResultTable.name[9] = "Cruzeiro";
+    finalResultTable.name[10] = "CSA";
+    finalResultTable.name[11] = "Flamengo";
+    finalResultTable.name[12] = "Fluminense";
+    finalResultTable.name[13] = "Fortaleza";
+    finalResultTable.name[14] = "Goiás ";
+    finalResultTable.name[15] = "Grêmio";
+    finalResultTable.name[16] = "Internacional" ;
+    finalResultTable.name[17] = "Palmeiras ";
+    finalResultTable.name[18] = "Santos ";
+    finalResultTable.name[19] = "São Paulo ";
+    finalResultTable.name[20] = "Vasco";
 }
 
 void main()
