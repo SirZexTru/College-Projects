@@ -1,0 +1,9 @@
+{% if app.campaignFinished == false and not maxLuckyCounter() %}
+    <div class="sign-in" id="btn-new-coupon">
+        <div class="flex-item purple">
+            <img src="/img/arrow-01.png" alt="" class="hide-sm">
+            <a href="/meus-cupons/cadastrar" class="scale-effect bg-link" style="font-size: 0.5em; max-width: 300px">Cadastre suas notas aqui</a>
+            <img src="/img/arrow-02.png" alt="">
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,30 @@
+.my-account label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.invoice-header {
+  float: right;
+  font-size: 11px;
+  color: #d81d1d;
+}
+
+#login-modal {
+  color: #123F86;
+}
+
+.form-login {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+
+  @media (min-width: 768px) {
+      width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-my-coupons {
+    text-align: center;
+  }
+}

@@ -1,0 +1,18 @@
+.down {
+  cursor: pointer;
+}
+
+.question {
+  font-size: 19px;
+  font-weight: bold;
+
+  &-header p {
+    text-align: justify;
+    font-size: 18px;
+  }
+}
+
+.active-question {
+  background-color: #dcd1d1;
+}
+

@@ -1,0 +1,40 @@
+<footer id="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="promo-text col-md-6 col-lg-offset-2 col-lg-4">
+                <div class="first-icon">
+                    <img src="/img/logo.svg" alt="">
+                </div>
+
+                <p class="promo-text-content">
+                    Certificado de Autorização CAIXA nº 6-8564/2018.<br>
+                    Promoção válida para compras e cadastros realizados entre 17/12/2018 e 15/03/2019. Os sorteios serão realizados às 11h, nos dias 23/01, 20/02 e 20/03/2019.<br>
+                    Promoção válida somente para pessoas físicas, maiores de 18 anos, residentes no Brasil e com CPF/MF válido. Imagens meramente ilustrativas.
+                </p>
+            </div>
+
+            <div class="footer-main-menu col-md-6">
+                <ul class="nav-footer">
+                    <li><a href="/#como-funciona" class="como-funciona-link">Como Funciona</a></li>
+                    <li><a href="/premios">Prêmios</a></li>
+                    <li class="link-rules desk"><a href="/regulamento">Regulamento</a></li>
+                    <li class="link-rules mb"><a href="/files/regulamento.pdf" download>Regulamento</a></li>
+                    {% if app.campaignFinished == false or not app.user %}
+                        <li><a href="/user/cadastro">Cadastre-se</a></li>
+                    {% endif %}
+                    {% if not fileIsEmpty %}
+                        <li><a href="/duvidas">Dúvidas Frequentes</a></li>
+                    {% endif %}
+                    <li>
+                        <a href="/fale-conosco">Fale Conosco</a>
+                    </li>
+
+                    {# This fixes the columns layout to look exacly as the artwork #}
+                    {% for i in 0..2 %}
+                        <li>&nbsp;</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

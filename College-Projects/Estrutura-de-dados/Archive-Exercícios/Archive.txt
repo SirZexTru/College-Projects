@@ -1,0 +1,3 @@
+Gustavo 10 10 10 10
+Victor 9 9 9 9
+Osmar 8 8 8 8
