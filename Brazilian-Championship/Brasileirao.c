@@ -23,34 +23,17 @@
 // 3: Fazer primeira rodada automatizada
 // 4: Fazer 38 rodadas automatizadas
 
-// TODO: Implement with struct, considering each column an array of 21 spaces (1 for title, 20 for data)
-char finalResultTable[21][10];
+// TODO: Implement with struct, considering each column an array of 20 spaces
+struct tableData
+{
+    char name[20];
+    int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
+};
+struct tableData finalResultTable;
 
 char insertValuesOnTable()
 {
-    for (int i=1; i<=21; i++)
-    {
-        finalResultTable[i][1] = i;
-    }
-    
-    finalResultTable[0][0] = "Colocação | ";
-    finalResultTable[0][1] = "Classificação | ";
-    finalResultTable[0][2] = "P | ";
-    finalResultTable[0][3] = "J | ";
-    finalResultTable[0][4] = "V | ";
-    finalResultTable[0][5] = "E | ";
-    finalResultTable[0][6] = "D | ";
-    finalResultTable[0][7] = "GP | ";
-    finalResultTable[0][8] = "GC | ";
-    finalResultTable[0][9] = "SG | ";
-
-    for (int i=0; i<20; i++)
-    {
-        for (int j=0; j<10; j++)
-        {
-            printf("%s\n", finalResultTable[i][j]);
-        }
-    }
+    finalResultTable.name[0] = "São paulo"; 
 }
 
 void main()
