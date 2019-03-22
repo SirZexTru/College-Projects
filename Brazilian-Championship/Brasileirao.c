@@ -72,7 +72,7 @@ void insertTeamNamesOnTable(void)
 
 void adversariesLogic(void)
 {
-    finalResultTable.teamName[0];
+    finalResultTable.teamName[0], finalResultTable.teamName[1];
 }
 
 void roundResultsCalc(void)
