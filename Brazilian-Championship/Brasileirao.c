@@ -22,14 +22,17 @@
 
 #include <stdio.h>
 #include <conio.h>
+#include <locale.h>
 
 void insertTeamNamesOnTable(void);
 void adversariesLogic(void);
 void roundResultsCalc(void);
 
+// setlocale(LC_ALL, "Portuguese");
+
 struct tableColumns
 {
-    char teamName[20];
+    const char *teamName[20];
     int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
 };
 struct tableColumns finalResultTable;
@@ -40,8 +43,8 @@ void main()
     for (int i=0; i<20; i++)
     {
         // TODO: Implement archive ".csv" to show the the results
+        printf("----------------\n");
         printf("%s\n", finalResultTable.teamName[i]);
-        printf("----------------");
     }
     getch();
 }
@@ -72,6 +75,9 @@ void insertTeamNamesOnTable(void)
 
 void adversariesLogic(void)
 {
+    // time 1 joga com times 2 até 20 -> fazer um for
+    // time 2 joga com times 3 ate 20 -> fazer um for
+    // ...
     finalResultTable.teamName[0], finalResultTable.teamName[1];
 }
 
