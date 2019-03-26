@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <locale.h>
+// #include <csv.h>
 
 void insertTeamNamesOnTable(void);
 void adversariesLogic(void);
@@ -32,7 +33,7 @@ void roundResultsCalc(void);
 
 struct tableColumns
 {
-    const char *teamName[20];
+    const char *teamName[20], *teamInitials[20];
     int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
 };
 struct tableColumns finalResultTable;
@@ -78,7 +79,18 @@ void adversariesLogic(void)
     // time 1 joga com times 2 até 20 -> fazer um for
     // time 2 joga com times 3 ate 20 -> fazer um for
     // ...
-    finalResultTable.teamName[0], finalResultTable.teamName[1];
+    char url[] = "C:\\Users\\gusta\\OneDrive\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.csv", *token;
+    FILE* arq;
+    
+    arq = fopen(url, "r");
+    if (arq != NULL)
+    {
+        
+    }
+    else (arq == NULL)
+    {
+        printf("Não foi possível abrir o arquivo\n");
+    }
 }
 
 void roundResultsCalc(void)
