@@ -23,18 +23,18 @@
 #include <stdio.h>
 #include <conio.h>
 #include <locale.h>
-// #include <csv.h>
+#include <string.h>
 
 void insertTeamNamesOnTable(void);
 void adversariesLogic(void);
 void roundResultsCalc(void);
 
-// setlocale(LC_ALL, "Portuguese");
+setlocale(LC_ALL, "Portuguese");
 
 struct tableColumns
 {
-    const char *teamName[20], *teamInitials[20];
-    int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
+    char teamName[20], teamInitials[20];
+    int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20], gameRound;
 };
 struct tableColumns finalResultTable;
 
@@ -47,6 +47,7 @@ void main()
         printf("----------------\n");
         printf("%s\n", finalResultTable.teamName[i]);
     }
+    adversariesLogic();
     getch();
 }
 
@@ -76,26 +77,64 @@ void insertTeamNamesOnTable(void)
 
 void adversariesLogic(void)
 {
-    // time 1 joga com times 2 até 20 -> fazer um for
-    // time 2 joga com times 3 ate 20 -> fazer um for
-    // ...
     char url[] = "C:\\Users\\gusta\\OneDrive\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.csv", *token;
-    FILE* arq;
+    FILE* names;
+    FILE* table;
     
-    arq = fopen(url, "r");
-    if (arq != NULL)
+    names = fopen(url, "r");
+    if (names != NULL)
     {
-        
+		for (int i = 0; i < 20; i++)
+		{
+			char buf[255];
+
+            if (names != NULL)
+            {
+				fgets(buf, 255, (FILE*)names);
+            }
+            char* token = NULL;
+			char* next_token = NULL;
+			token = strtok(buf, ";");
+			strcpy(finalResultTable.teamName[i], token);
+			token = strtok(NULL, ";");
+			strcpy(finalResultTable.teamInitials[i], token);
+            printf("Iniciais: %s", finalResultTable.teamInitials[i]);
+        }
+
+        for (int i = 0; i < 380; i++)
+        {
+            char buf[256];
+
+            if (table != NULL)
+            {
+                fgets(buf, 255, (FILE*)table);
+            }
+
+            char* token = NULL;
+            char* next_token = NULL;
+            char* homeTeam = NULL;
+            char* visitorTeam = NULL;
+
+            token = strtok(buf, ";");
+            homeTeam = token;
+            token = strtok(NULL, ";");
+            visitorTeam = token;
+            token = strtok(NULL, ";");
+            fscanf(token, "%d", &finalResultTable.gameRound);
+            printf("%i", finalResultTable.gameRound);
+        }
     }
-    else (arq == NULL)
+    else (names == NULL);
     {
         printf("Não foi possível abrir o arquivo\n");
+        getch();
+        return 0;
     }
 }
 
 void roundResultsCalc(void)
 {
-    for (int i=0; i<=38; i++)
+    for (int i=0; i<38; i++)
     {
         // TODO: Calculate all results and save the values
         finalResultTable.games[0];
