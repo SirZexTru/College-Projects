@@ -24,34 +24,16 @@
 #include <conio.h>
 #include <locale.h>
 #include <string.h>
-
-void insertTeamNamesOnTable(void);
-void adversariesLogic(void);
-void roundResultsCalc(void);
-
-setlocale(LC_ALL, "Portuguese");
+#include <stdlib.h>
 
 struct tableColumns
 {
-    char teamName[20], teamInitials[20];
+    char* teamName[20], teamInitials[20];
     int position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20], gameRound;
 };
 struct tableColumns finalResultTable;
 
-void main()
-{
-    insertTeamNamesOnTable();
-    for (int i=0; i<20; i++)
-    {
-        // TODO: Implement archive ".csv" to show the the results
-        printf("----------------\n");
-        printf("%s\n", finalResultTable.teamName[i]);
-    }
-    adversariesLogic();
-    getch();
-}
-
-void insertTeamNamesOnTable(void)
+int insertTeamNamesOnTable(void)
 {
     finalResultTable.teamName[0] = "Atlético - MG";
     finalResultTable.teamName[1] = "Atlético - PR";
@@ -75,9 +57,10 @@ void insertTeamNamesOnTable(void)
     finalResultTable.teamName[19] = "Vasco";
 }
 
-void adversariesLogic(void)
+int adversariesLogic(void)
 {
-    char url[] = "C:\\Users\\gusta\\OneDrive\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.csv", *token;
+    char url[] = "C:\\Users\\gusta\\OneDrive\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.csv";
+    char *token;
     FILE* names;
     FILE* table;
     
@@ -107,7 +90,7 @@ void adversariesLogic(void)
 
             if (table != NULL)
             {
-                fgets(buf, 255, (FILE*)table);
+                fgets(buf, 256, (FILE*)table);
             }
 
             char* token = NULL;
@@ -132,11 +115,20 @@ void adversariesLogic(void)
     }
 }
 
-void roundResultsCalc(void)
+// void roundResultsCalc(void)
+// {
+// }
+
+int main(void)
 {
-    for (int i=0; i<38; i++)
+    setlocale(LC_ALL, "Portuguese");
+    insertTeamNamesOnTable();
+    for (int i=0; i<20; i++)
     {
-        // TODO: Calculate all results and save the values
-        finalResultTable.games[0];
+        // TODO: Implement archive ".csv" to show the the results
+        printf("----------------\n");
+        printf("%s\n", finalResultTable.teamName[i]);
     }
+    adversariesLogic();
+    getch();
 }
