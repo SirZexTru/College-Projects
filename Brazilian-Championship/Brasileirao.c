@@ -140,15 +140,13 @@ void reorderArrays()
     // } 
 } 
 
-}
-
 void printResults(void)
 {
-    printf("Pos |  Nome  | P | J | V | E | D | GP | GC | SG |\n");
+    printf("Pos |    Nome    | P | J | V | E | D | GP | GC | SG |\n");
     for (int i = 0; i < 20; i++)
     {
-        printf("-----------------------------------------------------------------------------------\n");
-        printf("%i | ", i + 1);
+        printf("-----------------------------------------------------\n");
+        printf(" %i | ", i + 1);
         printf("%s | ", finalResultTable.teamName[i]);
         printf("%i | ", finalResultTable.points[i]);
         printf("%i | ", finalResultTable.games[i]);
