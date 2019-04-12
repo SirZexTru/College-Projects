@@ -1,7 +1,7 @@
-// Gustavo Ausechi Furlan
+// Aluno: Gustavo Ausechi Furlan
 // RA: 2576
-// ECON3S
-// Algoritmo que simula a execução do Campeonato Brasileiro
+// Turma: ECON3S
+// Algoritmo que simula a execução do Campeonato Brasileiro.
 
 // Objetivo: simular as 38 rodadas do Campeonato Brasileiro de futebol, apresentando os seguintes dados de cada time:
 // - Colocação
@@ -15,15 +15,13 @@
 // - Gols recebidos (GC)
 // - Saldo de Gols (SG)
 
-// 1: Construir tabela de resultados e preencher nomes dos times
-// 2: Fazer primeira rodada manual
-// 3: Fazer primeira rodada automatizada
-// 4: Fazer 38 rodadas automatizadas
+// TODO: Fazer primeira rodada manual
+// TODO: Fazer primeira rodada automatizada
+// TODO: Fazer 38 rodadas automatizadas
 
 #include <stdio.h>
 #include <conio.h>
 #include <locale.h>
-#include <string.h>
 #include <stdlib.h>
 
 struct tableColumns
@@ -122,23 +120,33 @@ void reorderArrays()
             }
         }
     }
-    // Function to reorder elements of arr[] according 
-    // to index[] 
-    // void reorder(int arr[], int index[], int n) 
-    // { 
-    // int temp[n]; 
-  
-    // // arr[i] should be present at index[i] index 
-    // for (int i=0; i<n; i++) 
-    //     temp[index[i]] = arr[i]; 
-  
-    // // Copy temp[] to arr[] 
-    // for (int i=0; i<n; i++) 
-    // {  
-    //    arr[i]   = temp[i]; 
-    //    index[i] = i; 
-    // } 
 } 
+int compare(const void * a, const void * b) 
+{
+    double diff = finalResultTable.points[*(int*)a] - finalResultTable.points[*(int*)b];
+    return  (0 < diff) - (diff < 0);
+    sortTeamsByPoints(finalResultTable.games);
+    sortTeamsByPoints(finalResultTable.wins);
+    sortTeamsByPoints(finalResultTable.draw);
+    sortTeamsByPoints(finalResultTable.loses);
+    sortTeamsByPoints(finalResultTable.goalsDone);
+    sortTeamsByPoints(finalResultTable.goalsReceived);
+    sortTeamsByPoints(finalResultTable.goalsBalance);
+}
+
+int sortTeamsByPoints(int arrayToBeOrdered[])
+{
+    int perm[20];
+    int res[20];
+    for (int i = 0; i < 20; i++) 
+    {
+        perm[i] = i;
+    }
+    qsort (perm, 20, sizeof(int), compare);
+    for (int i = 0; i < 20; i++) {
+        res[i] = arrayToBeOrdered[perm[i]];
+    }
+}
 
 void printResults(void)
 {
@@ -157,6 +165,7 @@ void printResults(void)
         printf("%i | ", finalResultTable.goalsReceived[i]);
         printf("%i |\n", finalResultTable.goalsBalance[i]);
     }
+    printf("-----------------------------------------------------");
 
     printf("\n\n----------------------------------------\n");
     printf("Times que vão para a libertadores: \n");
@@ -173,7 +182,8 @@ void printResults(void)
     printf("----------------------------------------\n\n");
 
     printf("O campeão é: %s\n\n", finalResultTable.champion);
-    printf("Pressione Enter para encerrar o programa...");
+    printf("----------------------------------------\n\n");
+    printf("Pressione enter para finalizar...");
     getch();
 }
 
@@ -183,5 +193,6 @@ int main(void)
     insertTeamDataOnTable();
     matchesLogic();
     roundResultsCalc();
+    compare();
     printResults();
 }
