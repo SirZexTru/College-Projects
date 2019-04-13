@@ -27,9 +27,16 @@
 struct tableColumns
 {
     char* teamName[20], teamInitial[20], bestFour[4], worstFour[4], champion;
-    int id[20], position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20], matchesPerRound[20];
+    int id[20], position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
 };
 struct tableColumns finalResultTable;
+
+struct roundData
+{
+    char team1, team2;
+    int round;
+};
+struct roundData rounds[380];
 
 int insertTeamDataOnTable(void)
 {
@@ -54,36 +61,15 @@ int insertTeamDataOnTable(void)
     finalResultTable.teamName[18] = "São Paulo";
     finalResultTable.teamName[19] = "Vasco";
 
-    finalResultTable.teamInitial[0] = "ATM";
-    finalResultTable.teamInitial[1] = "ATP";
-    finalResultTable.teamInitial[2] = "AVA";
-    finalResultTable.teamInitial[3] = "BAH";
-    finalResultTable.teamInitial[4] = "BOT";
-    finalResultTable.teamInitial[5] = "CEA";
-    finalResultTable.teamInitial[6] = "CHA";
-    finalResultTable.teamInitial[7] = "COR";
-    finalResultTable.teamInitial[8] = "CRU";
-    finalResultTable.teamInitial[9] = "CSA";
-    finalResultTable.teamInitial[10] = "FLA";
-    finalResultTable.teamInitial[11] = "FLU";
-    finalResultTable.teamInitial[12] = "FOR";
-    finalResultTable.teamInitial[13] = "GOI";
-    finalResultTable.teamInitial[14] = "GRE";
-    finalResultTable.teamInitial[15] = "INT";
-    finalResultTable.teamInitial[16] = "PAL";
-    finalResultTable.teamInitial[17] = "SAN";
-    finalResultTable.teamInitial[18] = "SPA";
-    finalResultTable.teamInitial[19] = "VAS";
-
     for (int i = 0; i < 20; i++)
     {
         finalResultTable.id[i] = i;
     }
 }
 
-int matchesLogic(void)
+void matchesLogic(void)
 {
-    char url[] = "C:\\Users\\gusta\\Documents\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.txt";
+    char url[] = "C:\\Users\\gusta\\Documents\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.txt", team;
     FILE *table;
 
     table = fopen(url, "r");
@@ -92,18 +78,41 @@ int matchesLogic(void)
         printf("Não foi possível abrir o arquivo\n");
         getch();
     }
-    // else
-    // {
-    //     while (fscanf(table) != EOF)
-    //     {
-    //         finalResultTable.matchesPerRound = 
-    //     }
-    // }
+    else
+    {
+        // Print file content for checkup
+        char c = fgetc(table); 
+        while (c != EOF) 
+        { 
+            printf ("%c", c); 
+            c = fgetc(table); 
+        }
+        getch();
+        system("cls");
+
+        int i = 0, a, b;
+        while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
+        {
+            printf("%s vs %s round: %i", rounds[i].team1, rounds[i].team2, rounds[i].round);
+            for (int i = 0; i < 20; i++)
+            {
+                if (rounds[i].team1 == finalResultTable.teamInitial)
+                {
+                   a = i; 
+                }
+                if (rounds[i].team2 == finalResultTable.teamInitial)
+                {
+                    b = i;
+                }
+            }
+            i++;
+        }
+    }
 }
 
-int roundResultsCalc(void)
+void roundResultsCalc()
 {
-    
+
 }
 
 void reorderArrays()
@@ -150,12 +159,12 @@ int sortTeamsByPoints(int arrayToBeOrdered[])
 
 void printResults(void)
 {
-    printf("Pos |    Nome    | P | J | V | E | D | GP | GC | SG |\n");
+    printf("Pos | Nome | P | J | V | E | D | GP | GC | SG |\n");
     for (int i = 0; i < 20; i++)
     {
-        printf("-----------------------------------------------------\n");
-        printf(" %i | ", i + 1);
-        printf("%s | ", finalResultTable.teamName[i]);
+        printf("---------------------------------------------\n");
+        printf("%i | ", i + 1);
+        printf("%s | ", finalResultTable.teamInitial[i]);
         printf("%i | ", finalResultTable.points[i]);
         printf("%i | ", finalResultTable.games[i]);
         printf("%i | ", finalResultTable.wins[i]);
@@ -165,7 +174,7 @@ void printResults(void)
         printf("%i | ", finalResultTable.goalsReceived[i]);
         printf("%i |\n", finalResultTable.goalsBalance[i]);
     }
-    printf("-----------------------------------------------------");
+    printf("---------------------------------------------");
 
     printf("\n\n----------------------------------------\n");
     printf("Times que vão para a libertadores: \n");
@@ -193,6 +202,6 @@ int main(void)
     insertTeamDataOnTable();
     matchesLogic();
     roundResultsCalc();
-    compare();
+    // compare();
     printResults();
 }
