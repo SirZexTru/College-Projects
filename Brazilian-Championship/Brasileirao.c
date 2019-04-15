@@ -133,7 +133,7 @@ void matchesLogic(void)
     }
 }
 
-int roundResultsCalc(int round, int teamOne, int scoreTeamOne, int teamTwo, int scoreTeamTwo)
+void roundResultsCalc(int round, int teamOne, int scoreTeamOne, int teamTwo, int scoreTeamTwo)
 {
     if (scoreTeamOne > scoreTeamTwo)
     {
