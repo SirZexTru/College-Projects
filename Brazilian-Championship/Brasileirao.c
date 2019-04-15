@@ -24,7 +24,7 @@
 struct tableColumns
 {
     char teamName[20][20], teamInitial[20][4], bestFour[4][20], worstFour[4][20], champion[20];
-    int id[20], dataTable[21][9];
+    int dataTable[21][9]; // points=0, games=1, wins=2 draws=3 loses=4 GP=5, GC=6, SG=7, id=8.
 };
 struct tableColumns finalResultTable;
 
@@ -85,42 +85,11 @@ int insertTeamDataOnTable(void)
     }
 }
 
-void roundResultsCalc(int round, int teamOne, int scoreTeam1, int teamTwo, int scoreTeam2)
-{
-    if (scoreTeam1 > scoreTeam2)
-    {
-        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 3;
-        finalResultTable.dataTable[teamOne][2] = finalResultTable.dataTable[teamOne][2] + 1;
-        finalResultTable.dataTable[teamTwo][4] = finalResultTable.dataTable[teamTwo][4] + 1;
-    }
-    else if (scoreTeam1 < scoreTeam2)
-    {
-        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 3;
-        finalResultTable.dataTable[teamTwo][2] = finalResultTable.dataTable[teamTwo][2] + 1;
-        finalResultTable.dataTable[teamOne][4] = finalResultTable.dataTable[teamTwo][4] + 1;
-    }
-    else if (scoreTeam1 == scoreTeam2)
-    {
-        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 1;
-        finalResultTable.dataTable[teamOne][3] = finalResultTable.dataTable[teamOne][3] + 1;
-        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 1;
-        finalResultTable.dataTable[teamTwo][3] = finalResultTable.dataTable[teamTwo][3] + 1;
-    }
-    finalResultTable.dataTable[teamOne][5] = finalResultTable.dataTable[teamOne][5] + scoreTeam1;
-    finalResultTable.dataTable[teamOne][6] = finalResultTable.dataTable[teamOne][6] + scoreTeam2;
-    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeam1 - scoreTeam2;
-
-    finalResultTable.dataTable[teamTwo][5] = finalResultTable.dataTable[teamTwo][5] + scoreTeam2;
-    finalResultTable.dataTable[teamTwo][6] = finalResultTable.dataTable[teamTwo][6] + scoreTeam1;
-    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeam2 - scoreTeam1;
-}
-
 // TODO: Implement random value
-// int randomValue(void)
-// {
-//     int r = rand() % 20;
-//     printf("%i", r);
-// }
+int randomValue(void)
+{
+    int r = rand() % 20;
+}
 
 void matchesLogic(void)
 {
@@ -141,15 +110,14 @@ void matchesLogic(void)
             printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round, i);
             for (int i = 0; i < 20; i++)
             {
-                if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[i])) == 0)
+                if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[i])) == 0) // BUG
                 {
-                    teamOne = finalResultTable.dataTable[i][9];
-                    finalResultTable.dataTable[i][1]++;
-
+                    teamOne = finalResultTable.dataTable[i][8];
+                    finalResultTable.dataTable[i][1]++; 
                 }
-                else if ((strcmp(rounds[i].team2, finalResultTable.teamInitial[i])) == 0)
+                else if ((strcmp(rounds[i].team2, finalResultTable.teamInitial[i])) == 0) // BUG
                 {
-                    teamTwo = finalResultTable.dataTable[i][9];
+                    teamTwo = finalResultTable.dataTable[i][8];
                     finalResultTable.dataTable[i][1]++;
                 }
                 // printf("DEBUG: %s vs %s\n", rounds[i].team1, rounds[i].team2);
@@ -157,12 +125,42 @@ void matchesLogic(void)
             }
             // scoreTeamOne = randomValue();
             // scoreTeamTwo = randomValue();
-            roundResultsCalc(rounds[i].round, teamOne, scoreTeamOne, teamTwo, scoreTeamTwo);
+            // BUG roundResultsCalc(rounds[i].round, teamOne, scoreTeamOne, teamTwo, scoreTeamTwo);
             i++;
         }
         getch();
         system("cls");
     }
+}
+
+int roundResultsCalc(int round, int teamOne, int scoreTeamOne, int teamTwo, int scoreTeamTwo)
+{
+    if (scoreTeamOne > scoreTeamTwo)
+    {
+        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 3;
+        finalResultTable.dataTable[teamOne][2] = finalResultTable.dataTable[teamOne][2] + 1;
+        finalResultTable.dataTable[teamTwo][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+    }
+    else if (scoreTeamOne < scoreTeamTwo)
+    {
+        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 3;
+        finalResultTable.dataTable[teamTwo][2] = finalResultTable.dataTable[teamTwo][2] + 1;
+        finalResultTable.dataTable[teamOne][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+    }
+    else
+    {
+        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 1;
+        finalResultTable.dataTable[teamOne][3] = finalResultTable.dataTable[teamOne][3] + 1;
+        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 1;
+        finalResultTable.dataTable[teamTwo][3] = finalResultTable.dataTable[teamTwo][3] + 1;
+    }
+    finalResultTable.dataTable[teamOne][5] = finalResultTable.dataTable[teamOne][5] + scoreTeamOne;
+    finalResultTable.dataTable[teamOne][6] = finalResultTable.dataTable[teamOne][6] + scoreTeamTwo;
+    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeamOne - scoreTeamTwo;
+
+    finalResultTable.dataTable[teamTwo][5] = finalResultTable.dataTable[teamTwo][5] + scoreTeamTwo;
+    finalResultTable.dataTable[teamTwo][6] = finalResultTable.dataTable[teamTwo][6] + scoreTeamOne;
+    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeamTwo - scoreTeamOne;
 }
 
 void reorderTeams()
