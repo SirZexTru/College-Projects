@@ -85,6 +85,43 @@ int insertTeamDataOnTable(void)
     }
 }
 
+void roundResultsCalc(int round, int teamOne, int scoreTeam1, int teamTwo, int scoreTeam2)
+{
+    if (scoreTeam1 > scoreTeam2)
+    {
+        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 3;
+        finalResultTable.dataTable[teamOne][2] = finalResultTable.dataTable[teamOne][2] + 1;
+        finalResultTable.dataTable[teamTwo][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+    }
+    else if (scoreTeam1 < scoreTeam2)
+    {
+        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 3;
+        finalResultTable.dataTable[teamTwo][2] = finalResultTable.dataTable[teamTwo][2] + 1;
+        finalResultTable.dataTable[teamOne][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+    }
+    else if (scoreTeam1 == scoreTeam2)
+    {
+        finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 1;
+        finalResultTable.dataTable[teamOne][3] = finalResultTable.dataTable[teamOne][3] + 1;
+        finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 1;
+        finalResultTable.dataTable[teamTwo][3] = finalResultTable.dataTable[teamTwo][3] + 1;
+    }
+    finalResultTable.dataTable[teamOne][5] = finalResultTable.dataTable[teamOne][5] + scoreTeam1;
+    finalResultTable.dataTable[teamOne][6] = finalResultTable.dataTable[teamOne][6] + scoreTeam2;
+    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeam1 - scoreTeam2;
+
+    finalResultTable.dataTable[teamTwo][5] = finalResultTable.dataTable[teamTwo][5] + scoreTeam2;
+    finalResultTable.dataTable[teamTwo][6] = finalResultTable.dataTable[teamTwo][6] + scoreTeam1;
+    finalResultTable.dataTable[teamTwo][7] = finalResultTable.dataTable[teamTwo][7] + scoreTeam2 - scoreTeam1;
+}
+
+// TODO: Implement random value
+// int randomValue(void)
+// {
+//     int r = rand() % 20;
+//     printf("%i", r);
+// }
+
 void matchesLogic(void)
 {
     char url[] = "C:\\Users\\gusta\\Documents\\GitHub\\College-Projects\\Brazilian-Championship\\tabela-campeonato.txt", team;
@@ -98,41 +135,34 @@ void matchesLogic(void)
     }
     else
     {
-        // char c = fgetc(table); 
-        // while (c != EOF) 
-        // { 
-        //     printf ("%c", c); 
-        //     c = fgetc(table); 
-        // }
-        // getch();
-        // system("cls");
-
-        int i = 0, a, b;
+        int i = 0, teamOne, teamTwo, scoreTeamOne, scoreTeamTwo;
         while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
         {
-            printf("%s vs %s round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
+            printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round, i);
             for (int i = 0; i < 20; i++)
             {
-                if (rounds[i].team1 == finalResultTable.teamInitial[i])
+                if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[i])) == 0)
                 {
-                    finalResultTable.dataTable[i][2]++; 
+                    teamOne = finalResultTable.dataTable[i][9];
+                    finalResultTable.dataTable[i][1]++;
+
                 }
-                if (rounds[i].team2 == finalResultTable.teamInitial[i])
+                else if ((strcmp(rounds[i].team2, finalResultTable.teamInitial[i])) == 0)
                 {
-                    finalResultTable.dataTable[i][2]++;
+                    teamTwo = finalResultTable.dataTable[i][9];
+                    finalResultTable.dataTable[i][1]++;
                 }
+                // printf("DEBUG: %s vs %s\n", rounds[i].team1, rounds[i].team2);
+                // getch();
             }
-            // TODO: Implement random score generator.
+            // scoreTeamOne = randomValue();
+            // scoreTeamTwo = randomValue();
+            roundResultsCalc(rounds[i].round, teamOne, scoreTeamOne, teamTwo, scoreTeamTwo);
             i++;
         }
         getch();
         system("cls");
     }
-}
-
-void roundResultsCalc()
-{
-
 }
 
 void reorderTeams()
@@ -153,7 +183,7 @@ void reorderTeams()
 
                     strcpy(temporary2, finalResultTable.teamInitial[i]);
                     strcpy(finalResultTable.teamInitial[i], finalResultTable.teamInitial[j]);
-                    strcpy(finalResultTable.teamInitial, temporary2);
+                    strcpy(finalResultTable.teamInitial[j], temporary2);
 
                     strcpy(temporary3, finalResultTable.teamName[i]);
                     strcpy(finalResultTable.teamName[i], finalResultTable.teamName[j]);
@@ -171,9 +201,9 @@ void reorderTeams()
     // }
 }
 
-void defineChampionsAndLosers(void)
+void defineWinnersAndLosers(void)
 {
-    strcpy(finalResultTable.champion, finalResultTable.teamInitial[0]);
+    strcpy(finalResultTable.champion, finalResultTable.teamName[0]);
     for (int i = 0; i < 4; i++)
     {
         strcpy(finalResultTable.bestFour[i], finalResultTable.teamName[i]);
@@ -190,8 +220,15 @@ void printResults(void)
     for (int i = 0; i < 20; i++)
     {
         printf("---------------------------------------------\n");
-        printf(" %i | ", i + 1);
-        printf("%s | ", finalResultTable.teamInitial[i]);
+        if (i < 10)
+        {
+            printf(" %02i | ", i + 1);
+        }
+        else
+        {
+            printf(" %i | ", i + 1);
+        }
+        printf("%s  | ", finalResultTable.teamInitial[i]);
         printf("%i | ", finalResultTable.dataTable[i][0]);
         printf("%i | ", finalResultTable.dataTable[i][1]);
         printf("%i | ", finalResultTable.dataTable[i][2]);
@@ -228,7 +265,7 @@ int main(void)
     setlocale(LC_ALL, "Portuguese");
     insertTeamDataOnTable();
     matchesLogic();
-    roundResultsCalc();
     reorderTeams();
+    defineWinnersAndLosers();
     printResults();
 }
