@@ -1,7 +1,7 @@
 // Aluno: Gustavo Ausechi Furlan
 // RA: 2576
 // Turma: ECON3S
-// Algoritmo que simula a execução do Campeonato Brasileiro.
+// Algoritmo que simula a execução do Campeonato Brasileiro de Futebol.
 
 // Objetivo: simular as 38 rodadas do Campeonato Brasileiro de futebol, apresentando os seguintes dados de cada time:
 // - Colocação
@@ -15,55 +15,73 @@
 // - Gols recebidos (GC)
 // - Saldo de Gols (SG)
 
-// TODO: Fazer primeira rodada manual
-// TODO: Fazer primeira rodada automatizada
-// TODO: Fazer 38 rodadas automatizadas
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <conio.h>
 #include <locale.h>
-#include <stdlib.h>
 
 struct tableColumns
 {
-    char* teamName[20], teamInitial[20], bestFour[4], worstFour[4], champion;
-    int id[20], position[20], points[20], games[20], wins[20], draw[20], loses[20], goalsDone[20], goalsReceived[20], goalsBalance[20];
+    char teamName[20][20], teamInitial[20][4], bestFour[4][20], worstFour[4][20], champion[20];
+    int id[20], dataTable[21][9];
 };
 struct tableColumns finalResultTable;
 
 struct roundData
 {
-    char team1, team2;
+    char team1[4], team2[4];
     int round;
 };
 struct roundData rounds[380];
 
 int insertTeamDataOnTable(void)
 {
-    finalResultTable.teamName[0] = "Atlético-MG";
-    finalResultTable.teamName[1] = "Atlético-PR";
-    finalResultTable.teamName[2] = "Avaí";
-    finalResultTable.teamName[3] = "Bahia";
-    finalResultTable.teamName[4] = "Botafogo";
-    finalResultTable.teamName[5] = "Ceará";
-    finalResultTable.teamName[6] = "Chapecoense";
-    finalResultTable.teamName[7] = "Corinthians";
-    finalResultTable.teamName[8] = "Cruzeiro";
-    finalResultTable.teamName[9] = "CSA";
-    finalResultTable.teamName[10] = "Flamengo";
-    finalResultTable.teamName[11] = "Fluminense";
-    finalResultTable.teamName[12] = "Fortaleza";
-    finalResultTable.teamName[13] = "Goiás";
-    finalResultTable.teamName[14] = "Grêmio";
-    finalResultTable.teamName[15] = "Internacional" ;
-    finalResultTable.teamName[16] = "Palmeiras";
-    finalResultTable.teamName[17] = "Santos";
-    finalResultTable.teamName[18] = "São Paulo";
-    finalResultTable.teamName[19] = "Vasco";
+    strcpy(finalResultTable.teamName[0], "Atlético-MG");
+    strcpy(finalResultTable.teamName[1], "Atlético-PR");
+    strcpy(finalResultTable.teamName[2], "Avaí");
+    strcpy(finalResultTable.teamName[3], "Bahia");
+    strcpy(finalResultTable.teamName[4], "Botafogo");
+    strcpy(finalResultTable.teamName[5], "Ceará");
+    strcpy(finalResultTable.teamName[6], "Chapecoense");
+    strcpy(finalResultTable.teamName[7], "Corinthians");
+    strcpy(finalResultTable.teamName[8], "Cruzeiro");
+    strcpy(finalResultTable.teamName[9], "CSA");
+    strcpy(finalResultTable.teamName[10], "Flamengo");
+    strcpy(finalResultTable.teamName[11], "Fluminense");
+    strcpy(finalResultTable.teamName[12], "Fortaleza");
+    strcpy(finalResultTable.teamName[13], "Goiás");
+    strcpy(finalResultTable.teamName[14], "Grêmio");
+    strcpy(finalResultTable.teamName[15], "Internacional");
+    strcpy(finalResultTable.teamName[16], "Palmeiras");
+    strcpy(finalResultTable.teamName[17], "Santos");
+    strcpy(finalResultTable.teamName[18], "São Paulo");
+    strcpy(finalResultTable.teamName[19], "Vasco");
+        
+    strcpy(finalResultTable.teamInitial[0], "ATM");
+    strcpy(finalResultTable.teamInitial[1], "ATP");
+    strcpy(finalResultTable.teamInitial[2], "AVA");
+    strcpy(finalResultTable.teamInitial[3], "BAH");
+    strcpy(finalResultTable.teamInitial[4], "BOT");
+    strcpy(finalResultTable.teamInitial[5], "CEA");
+    strcpy(finalResultTable.teamInitial[6], "CHA");
+    strcpy(finalResultTable.teamInitial[7], "COR");
+    strcpy(finalResultTable.teamInitial[8], "CRU");
+    strcpy(finalResultTable.teamInitial[9], "CSA");
+    strcpy(finalResultTable.teamInitial[10], "FLA");
+    strcpy(finalResultTable.teamInitial[11], "FLU");
+    strcpy(finalResultTable.teamInitial[12], "FOR");
+    strcpy(finalResultTable.teamInitial[13], "GOI");
+    strcpy(finalResultTable.teamInitial[14], "GRE");
+    strcpy(finalResultTable.teamInitial[15], "INT");
+    strcpy(finalResultTable.teamInitial[16], "PAL");
+    strcpy(finalResultTable.teamInitial[17], "SAN");
+    strcpy(finalResultTable.teamInitial[18], "SPA");
+    strcpy(finalResultTable.teamInitial[19], "VAS");
 
     for (int i = 0; i < 20; i++)
     {
-        finalResultTable.id[i] = i;
+        finalResultTable.dataTable[i][8] = i;
     }
 }
 
@@ -80,33 +98,35 @@ void matchesLogic(void)
     }
     else
     {
-        // Print file content for checkup
-        char c = fgetc(table); 
-        while (c != EOF) 
-        { 
-            printf ("%c", c); 
-            c = fgetc(table); 
-        }
-        getch();
-        system("cls");
+        // char c = fgetc(table); 
+        // while (c != EOF) 
+        // { 
+        //     printf ("%c", c); 
+        //     c = fgetc(table); 
+        // }
+        // getch();
+        // system("cls");
 
         int i = 0, a, b;
         while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
         {
-            printf("%s vs %s round: %i", rounds[i].team1, rounds[i].team2, rounds[i].round);
+            printf("%s vs %s round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
             for (int i = 0; i < 20; i++)
             {
-                if (rounds[i].team1 == finalResultTable.teamInitial)
+                if (rounds[i].team1 == finalResultTable.teamInitial[i])
                 {
-                   a = i; 
+                    finalResultTable.dataTable[i][2]++; 
                 }
-                if (rounds[i].team2 == finalResultTable.teamInitial)
+                if (rounds[i].team2 == finalResultTable.teamInitial[i])
                 {
-                    b = i;
+                    finalResultTable.dataTable[i][2]++;
                 }
             }
+            // TODO: Implement random score generator.
             i++;
         }
+        getch();
+        system("cls");
     }
 }
 
@@ -115,45 +135,52 @@ void roundResultsCalc()
 
 }
 
-void reorderArrays()
+void reorderTeams()
 {
-    for (int i = 0; i < 20; ++i) 
+    int rows = 20, columns = 9, k = 0, x = 0, temporary1;
+    char temporary2[4], temporary3[20];
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = i + 1; j < 20; ++j)
+        for (int j = i + 1; j < rows; j++)
         {
-            if (finalResultTable.points[i] > finalResultTable.points[j]) 
+            if (finalResultTable.dataTable[i][k] > finalResultTable.dataTable[j][k])
             {
-                int a =  finalResultTable.points[i];
-                finalResultTable.points[i] = finalResultTable.points[j];
-                finalResultTable.points[j] = a;
+                for (x = 0; x < 9; x++) 
+                {
+                    temporary1 = finalResultTable.dataTable[i][x];
+                    finalResultTable.dataTable[i][x]= finalResultTable.dataTable[j][x];
+                    finalResultTable.dataTable[j][x] = temporary1;
+
+                    strcpy(temporary2, finalResultTable.teamInitial[i]);
+                    strcpy(finalResultTable.teamInitial[i], finalResultTable.teamInitial[j]);
+                    strcpy(finalResultTable.teamInitial, temporary2);
+
+                    strcpy(temporary3, finalResultTable.teamName[i]);
+                    strcpy(finalResultTable.teamName[i], finalResultTable.teamName[j]);
+                    strcpy(finalResultTable.teamName[j], temporary3);
+                }
             }
         }
     }
-} 
-int compare(const void * a, const void * b) 
-{
-    double diff = finalResultTable.points[*(int*)a] - finalResultTable.points[*(int*)b];
-    return  (0 < diff) - (diff < 0);
-    sortTeamsByPoints(finalResultTable.games);
-    sortTeamsByPoints(finalResultTable.wins);
-    sortTeamsByPoints(finalResultTable.draw);
-    sortTeamsByPoints(finalResultTable.loses);
-    sortTeamsByPoints(finalResultTable.goalsDone);
-    sortTeamsByPoints(finalResultTable.goalsReceived);
-    sortTeamsByPoints(finalResultTable.goalsBalance);
+
+    // for (int i = 0; i < rows; i++)
+    // {
+    //         for (int j = 0; j < columns; j++)
+    //         printf("%d ", finalResultTable.dataTable[i][j]);
+    //         printf("\n");
+    // }
 }
 
-int sortTeamsByPoints(int arrayToBeOrdered[])
+void defineChampionsAndLosers(void)
 {
-    int perm[20];
-    int res[20];
-    for (int i = 0; i < 20; i++) 
+    strcpy(finalResultTable.champion, finalResultTable.teamInitial[0]);
+    for (int i = 0; i < 4; i++)
     {
-        perm[i] = i;
+        strcpy(finalResultTable.bestFour[i], finalResultTable.teamName[i]);
     }
-    qsort (perm, 20, sizeof(int), compare);
-    for (int i = 0; i < 20; i++) {
-        res[i] = arrayToBeOrdered[perm[i]];
+    for (int i = 0; i < 4; i++)
+    {
+        strcpy(finalResultTable.worstFour[i], finalResultTable.teamName[i]);
     }
 }
 
@@ -163,16 +190,16 @@ void printResults(void)
     for (int i = 0; i < 20; i++)
     {
         printf("---------------------------------------------\n");
-        printf("%i | ", i + 1);
+        printf(" %i | ", i + 1);
         printf("%s | ", finalResultTable.teamInitial[i]);
-        printf("%i | ", finalResultTable.points[i]);
-        printf("%i | ", finalResultTable.games[i]);
-        printf("%i | ", finalResultTable.wins[i]);
-        printf("%i | ", finalResultTable.draw[i]);
-        printf("%i | ", finalResultTable.loses[i]);
-        printf("%i | ", finalResultTable.goalsDone[i]);
-        printf("%i | ", finalResultTable.goalsReceived[i]);
-        printf("%i |\n", finalResultTable.goalsBalance[i]);
+        printf("%i | ", finalResultTable.dataTable[i][0]);
+        printf("%i | ", finalResultTable.dataTable[i][1]);
+        printf("%i | ", finalResultTable.dataTable[i][2]);
+        printf("%i | ", finalResultTable.dataTable[i][3]);
+        printf("%i | ", finalResultTable.dataTable[i][4]);
+        printf("%i | ", finalResultTable.dataTable[i][5]);
+        printf("%i | ", finalResultTable.dataTable[i][6]);
+        printf("%i |\n", finalResultTable.dataTable[i][7]);
     }
     printf("---------------------------------------------");
 
@@ -202,6 +229,6 @@ int main(void)
     insertTeamDataOnTable();
     matchesLogic();
     roundResultsCalc();
-    // compare();
+    reorderTeams();
     printResults();
 }
