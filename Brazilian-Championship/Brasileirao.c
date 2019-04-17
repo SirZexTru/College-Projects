@@ -161,39 +161,60 @@ void matchesLogic(void)
 
 void defineWinnersAndLosers(void)
 {
-	int j = 19;
+	int j = 19, tiedTeams[20];
 	for (int i = 18; i >= 0; i--)
 	{
 		if (finalResultTable.dataTable[j][0] == finalResultTable.dataTable[i][0])
 		{
-			if (finalResultTable.dataTable[j][5] == finalResultTable.dataTable[i][5])
+			if (finalResultTable.dataTable[j][2] == finalResultTable.dataTable[i][2])
 			{
-				if (finalResultTable.dataTable[j][6] == finalResultTable.dataTable[i][6])
+				if (finalResultTable.dataTable[j][5] == finalResultTable.dataTable[i][5])
 				{
 					if (finalResultTable.dataTable[j][7] == finalResultTable.dataTable[i][7])
-					{
-						printf("Há um empate entre os times %s e %s");
-						
+					{	
+						printf("Há um empate entre os times ");					
+						for (int k = 0; k < 20; k++)
+						{
+							tiedTeams[k] = k;
+							printf("%s, ", finalResultTable.teamName[tiedTeams[k]]);
+						}
 					}
 					else if (finalResultTable.dataTable[j][7] > finalResultTable.dataTable[i][7])
 					{
 						strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
 					}
+					else
+					{
+						strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+					}
+				}
+				else if (finalResultTable.dataTable[j][5] > finalResultTable.dataTable[i][5])
+				{
+					strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
 				}
 				else
 				{
-					/* code */
-				}
+					strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+				}	
+			}
+			else if (finalResultTable.dataTable[j][2] > finalResultTable.dataTable[i][2])
+			{
+				strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
 			}
 			else
 			{
-				/* code */
+				strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
 			}	
+		}
+		else if (finalResultTable.dataTable[j][0] > finalResultTable.dataTable[i][0])
+		{
+			strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
 		}
 		else
 		{
-			strcpy(finalResultTable.champion, finalResultTable.teamName[19]);
+			strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
 		}
+		// printf("\nDEBUG: j = %i, i = %i", j, i);
 		j--;
 	}
 	for (int i = 19; i > 15; i--)
@@ -237,7 +258,7 @@ void reorderTeams()
 
 void printResults(void)
 {
-	printf("\nPos | Nome | P | J | V | E | D | GP | GC | SG |\n");
+	printf("\nPos | Nome | P  | J  | V | E | D | GP  | GC  | SG  |\n");
 	for (int i = 19; i >= 0; i--)
 	{
 		printf("-----------------------------------------------------\n");
