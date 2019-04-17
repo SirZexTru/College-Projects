@@ -1,19 +1,10 @@
-// Aluno: Gustavo Ausechi Furlan
-// RA: 2576
-// Turma: ECON3S
+// Aluno: Gustavo Ausechi Furlan,
+// RA: 2576,
+// Turma: ECON3S,
 // Algoritmo que simula a execução do Campeonato Brasileiro de Futebol.
 
 // Objetivo: simular as 38 rodadas do Campeonato Brasileiro de futebol, apresentando os seguintes dados de cada time:
-// - Colocação
-// - Nome
-// - Pontos (P)
-// - Jogos (J)
-// - Vitórias (V)
-// - Empates (E)
-// - Derrotas (D)
-// - Gols feitos (GP)
-// - Gols recebidos (GC)
-// - Saldo de Gols (SG)
+// Colocação, nome, pontos(P), jogos(J), empates(E), derrotas(D), gols pró(GP), gols contra(GC) e o saldo de gols(SG).
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -214,7 +205,6 @@ void defineWinnersAndLosers(void)
 		{
 			strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
 		}
-		// printf("\nDEBUG: j = %i, i = %i", j, i);
 		j--;
 	}
 	for (int i = 19; i > 15; i--)
