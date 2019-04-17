@@ -1,12 +1,12 @@
 #include <stdio.h>
 
-unsigned int max=0;
-int i=0, j=0;
+unsigned int max = 0;
+int i = 0, j = 0;
 float maior, menor;
 
 float biggerAndSmaller(float a[], int max)
 {
-    for (j=0;j<max;j++)
+    for (j = 0; j < max; j++)
     {
         if (maior < a[j])
         {
@@ -24,9 +24,9 @@ main()
     printf("\nQuantos números serão inseridos: ");
     scanf("%i", &max);
     float numero[max];
-    for (i=0; i<max; i++)
+    for (i = 0; i < max; i++)
     {
-        printf("\nDigite %i valor: ", i+1);
+        printf("\nDigite %i valor: ", i + 1);
         scanf("%f", &numero[i]);
     }
     biggerAndSmaller(numero, max);
