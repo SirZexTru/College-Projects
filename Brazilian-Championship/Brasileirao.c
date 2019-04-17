@@ -128,7 +128,7 @@ void matchesLogic(void)
 		int i = 0, teamOne, teamTwo, scoreTeamOne, scoreTeamTwo;
 		while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
 		{
-			printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
+			// printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
 			for (int j = 0; j < 20; j++)
 			{
 				if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[j])) == 0)
@@ -195,10 +195,10 @@ void defineWinnersAndLosers(void)
 
 void printResults(void)
 {
-	printf("Pos | Nome | P | J | V | E | D | GP | GC | SG |\n");
+	printf("\nPos | Nome | P  | J  | V  | E  | D  | GP | GC | SG |\n");
 	for (int i = 19; i >= 0; i--)
 	{
-		printf("-----------------------------------------------------\n");
+		printf("---------------------------------------------------+\n");
 		if (i > 10)
 		{
 			printf(" %02i | ", 20 - i);
@@ -215,7 +215,14 @@ void printResults(void)
 		printf("%i | ", finalResultTable.dataTable[i][4]);
 		printf("%i | ", finalResultTable.dataTable[i][5]);
 		printf("%i | ", finalResultTable.dataTable[i][6]);
-		printf("%i |\n", finalResultTable.dataTable[i][7]);
+		if (finalResultTable.dataTable[i][7] < 10)
+		{
+			printf("%02i |\n", finalResultTable.dataTable[i][7]);
+		}
+		else
+		{
+			printf("%i |\n", finalResultTable.dataTable[i][7]);
+		}
 	}
 	printf("-----------------------------------------------------");
 
