@@ -128,7 +128,7 @@ void matchesLogic(void)
 		int i = 0, teamOne, teamTwo, scoreTeamOne, scoreTeamTwo;
 		while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
 		{
-			// printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
+			printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
 			for (int j = 0; j < 20; j++)
 			{
 				if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[j])) == 0)
@@ -147,7 +147,6 @@ void matchesLogic(void)
 			roundResultsCalc(rounds[i].round, teamOne, scoreTeamOne, teamTwo, scoreTeamTwo);
 			i++;
 		}
-		system("cls");
 	}
 }
 
