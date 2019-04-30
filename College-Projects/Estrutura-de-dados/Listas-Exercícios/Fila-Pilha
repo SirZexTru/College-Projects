@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <locale.h>
+
+// Jogar Fila pra Pilha e voltar para a Fila, assim invertendo a ordem da Fila
+// Passo 2: Fazer isso ir e voltar entre Fila e Pilha facilmente
+
+int fila[5], pilha[5], posicao = 0, guarda, topo = 0;
+
+void menu(void);
+void reordena(void);
+
+void enfileira(void)
+{
+
+}
+
+void reordena(void)
+{
+    int i = 0;
+    guarda = posicao;
+    while (i != guarda)
+    {
+        fila[i] = fila[i + 1];
+        i++;
+        posicao--;
+    }
+    printf("\nPosicao: %i", posicao);
+}
+
+void filaParaPilha(void)
+{
+    // Desenfileiro
+    if (posicao == 0)
+    {
+        printf("\nNao e possi­vel remover o item, fila vazia.\n");
+        getch();
+        system("cls");
+    }
+    else
+    {
+        fila[0] = 0;
+        reordena();
+        getch();
+        system("cls");
+    }
+
+    // Empilho
+    if (topo == 5)
+    {
+        printf("\nNao e possivel adicionar o item, pilha cheia.\n");
+        getch();
+        system("cls");
+    }
+    else
+    {
+        printf("\nDigite o numero que deseja filaParaPilhar: ");
+        scanf("%i", &pilha[topo]);
+        topo++;
+        system("cls");
+    }
+}
+
+void pilhaParaFila(void)
+{
+    // Desempilho
+    if (topo == 0)
+    {
+        printf("\nNao e possivel remover o item, pilha vazia.\n");
+        getch();
+        system("cls");
+    }
+    else
+    {
+        pilha[topo - 1] = 0;
+        topo--;
+        system("cls");
+    }
+
+    // Enfileiro
+    if (posicao == 5)
+    {
+        printf("\nNao e possi­vel adicionar o item, fila cheia.\n");
+        getch();
+        system("cls");
+    }
+    else
+    {
+        printf("\nDigite o numero que deseja adicionar: ");
+        scanf("%i", &fila[posicao]);
+        posicao++;
+        system("cls");
+    }
+}
+
+void menu(void)
+{
+    int escolha = 5;
+    while (escolha != 0)
+    {
+        printf("Pilha:     Fila: [");
+        for (int i = 0; i < 5; i++)
+        {
+            printf(" %i ", fila[i]);
+        }
+        printf("]");
+        for (int i = 0; i < 5; i++)
+        {
+            printf("\n[ %i ]", pilha[i]);
+        }
+
+        printf("\n\nO que deseja fazer?\n1 - Fila -> Pilha\n2 - Pilha -> Fila\n0 - Sair\n");
+        scanf("%i", &escolha);
+
+        switch (escolha)
+        {
+            case 0:
+                return 0;
+                break;
+            case 1:
+                filaParaPilha();
+                break;
+            case 2:
+                pilhaParaFila();
+                break;
+        }
+    }
+}
+
+void main(void)
+{
+    setlocale(LC_ALL, "Portuguese");
+    menu();
+    return 0;
+}
