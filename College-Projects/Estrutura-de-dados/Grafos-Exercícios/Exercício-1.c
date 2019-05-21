@@ -1,8 +1,5 @@
 #include <stdio.h>
 
-// Criar um codigo onde o usuario defina qunatos vertices ele possui, e quantas e quais adjacencias ele possui,
-// construindo assim uma matriz booleana, onde as celulas que possuem "1" representam os vertices que se ligam
-
 int main(void)
 {
     int vertices = 0, menu = 3;
@@ -10,9 +7,9 @@ int main(void)
     scanf("%i", &vertices);
     int matriz[vertices][vertices];
     
-    for (size_t i = 0; i < vertices; i++)
+    for (int i = 0; i < vertices; i++)
     {
-        for (size_t j = 0; j < vertices; j++)
+        for (int j = 0; j < vertices; j++)
         {
             matriz[i][j] = 0;
         }  
@@ -31,13 +28,13 @@ int main(void)
     
     while (menu != 0)
     {
-        size_t i, j;
+        int i, j;
         printf("Digite 1, 2 ou 0: ");
         scanf("%i", &menu);
         printf("Digite os valores das arestas: ");
-        scanf("%zu", &i);
+        scanf("%i", &i);
         i = i < (vertices - 1) ? i : (vertices - 1);
-        scanf("%zu", &j);
+        scanf("%i", &j);
         j = j < (vertices - 1) ? j : (vertices - 1);
         
         switch (menu)
