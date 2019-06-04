@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #define SIZE 40
 
-struct queue {
+struct queue 
+{
     int items[SIZE], front, rear;
 };
 
@@ -57,8 +58,8 @@ int main()
     return 0;
 }
 
-void bfs(struct Graph* graph, int startVertex) {
-
+void bfs(struct Graph* graph, int startVertex) 
+{
     struct queue* q = createQueue();
     
     graph->visited[startVertex] = 1;
@@ -71,10 +72,12 @@ void bfs(struct Graph* graph, int startVertex) {
     
        struct node* temp = graph->adjLists[currentVertex];
     
-       while(temp) {
+       while(temp) 
+       {
             int adjVertex = temp->vertex;
 
-            if(graph->visited[adjVertex] == 0){
+            if(graph->visited[adjVertex] == 0)
+            {
                 graph->visited[adjVertex] = 1;
                 enqueue(q, adjVertex);
             }
@@ -82,7 +85,6 @@ void bfs(struct Graph* graph, int startVertex) {
        }
     }
 }
-
  
 struct node* createNode(int v)
 {
@@ -92,7 +94,6 @@ struct node* createNode(int v)
     return newNode;
 }
  
-
 struct Graph* createGraph(int vertices)
 {
     struct Graph* graph = malloc(sizeof(struct Graph));
@@ -101,13 +102,12 @@ struct Graph* createGraph(int vertices)
     graph->adjLists = malloc(vertices * sizeof(struct node*));
     graph->visited = malloc(vertices * sizeof(int));
     
- 
     int i;
-    for (i = 0; i < vertices; i++) {
+    for (i = 0; i < vertices; i++) 
+    {
         graph->adjLists[i] = NULL;
         graph->visited[i] = 0;
     }
- 
     return graph;
 }
  
@@ -124,42 +124,57 @@ void addEdge(struct Graph* graph, int src, int dest)
     graph->adjLists[dest] = newNode;
 }
 
-struct queue* createQueue() {
+struct queue* createQueue() 
+{
     struct queue* q = malloc(sizeof(struct queue));
     q->front = -1;
     q->rear = -1;
     return q;
 }
 
-
-int isEmpty(struct queue* q) {
-    if(q->rear == -1) 
+int isEmpty(struct queue* q) 
+{
+    if(q->rear == -1)
+    {
         return 1;
-    else 
+    }
+    else
+    {
         return 0;
+    }
 }
 
-void enqueue(struct queue* q, int value){
+void enqueue(struct queue* q, int value)
+{
     if(q->rear == SIZE-1)
+    {
         printf("\nQueue is Full!!");
-    else {
+    }
+    else 
+    {
         if(q->front == -1)
+        {
             q->front = 0;
+        }
         q->rear++;
         q->items[q->rear] = value;
     }
 }
 
-int dequeue(struct queue* q){
+int dequeue(struct queue* q)
+{
     int item;
-    if(isEmpty(q)){
+    if(isEmpty(q))
+    {
         printf("Queue is empty");
         item = -1;
     }
-    else{
+    else
+    {
         item = q->items[q->front];
         q->front++;
-        if(q->front > q->rear){
+        if(q->front > q->rear)
+        {
             printf("Resetting queue");
             q->front = q->rear = -1;
         }
@@ -167,15 +182,20 @@ int dequeue(struct queue* q){
     return item;
 }
 
-void printQueue(struct queue *q) {
+void printQueue(struct queue *q) 
+{
     int i = q->front;
 
-    if(isEmpty(q)) {
+    if(isEmpty(q)) 
+    {
         printf("Queue is empty");
-    } else {
+    } 
+    else 
+    {
         printf("\nQueue contains \n");
-        for(i = q->front; i < q->rear + 1; i++) {
-                printf("%d ", q->items[i]);
+        for(i = q->front; i < q->rear + 1; i++) 
+        {
+            printf("%d ", q->items[i]);
         }
     }    
 }
