@@ -1,10 +1,10 @@
-// Aluno: Gustavo Ausechi Furlan
-// RA: 2576
-// Turma: ECON3S
+// Aluno: Gustavo Ausechi Furlan,
+// RA: 2576,
+// Turma: ECON3S,
 // Algoritmo que simula a execução do Campeonato Brasileiro de Futebol.
 
 // Objetivo: simular as 38 rodadas do Campeonato Brasileiro de futebol, apresentando os seguintes dados de cada time:
-// Colocação, nome, pontos (P), jogos (J), empates (E), derrotas (D), gols pró (GP), gols contra (GC) e o saldo de gols (SG).
+// Colocação, nome, pontos(P), jogos(J), empates(E), derrotas(D), gols pró(GP), gols contra(GC) e o saldo de gols(SG).
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,15 +87,15 @@ void roundResultsCalc(int round, int teamOne, int scoreTeamOne, int teamTwo, int
 {
 	if (scoreTeamOne > scoreTeamTwo)
 	{
-		finalResultTable.dataTable[teamOne][0] = finalResultTable.dataTable[teamOne][0] + 3;
-		finalResultTable.dataTable[teamOne][2] = finalResultTable.dataTable[teamOne][2] + 1;
-		finalResultTable.dataTable[teamTwo][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+		finalResultTable.dataTable[teamOne][0] += 3;
+		finalResultTable.dataTable[teamOne][2]++;
+		finalResultTable.dataTable[teamTwo][4]++;
 	}
 	else if (scoreTeamOne < scoreTeamTwo)
 	{
-		finalResultTable.dataTable[teamTwo][0] = finalResultTable.dataTable[teamTwo][0] + 3;
-		finalResultTable.dataTable[teamTwo][2] = finalResultTable.dataTable[teamTwo][2] + 1;
-		finalResultTable.dataTable[teamOne][4] = finalResultTable.dataTable[teamTwo][4] + 1;
+		finalResultTable.dataTable[teamTwo][0] += 3;
+		finalResultTable.dataTable[teamTwo][2]++;
+		finalResultTable.dataTable[teamOne][4]++;
 	}
 	else
 	{
@@ -128,7 +128,6 @@ void matchesLogic(void)
 		int i = 0, teamOne, teamTwo, scoreTeamOne, scoreTeamTwo;
 		while ((fscanf(table, "%s %s %i", rounds[i].team1, rounds[i].team2, &rounds[i].round)) != EOF)
 		{
-			printf("%s vs %s in round: %i\n", rounds[i].team1, rounds[i].team2, rounds[i].round);
 			for (int j = 0; j < 20; j++)
 			{
 				if ((strcmp(rounds[i].team1, finalResultTable.teamInitial[j])) == 0)
@@ -150,6 +149,73 @@ void matchesLogic(void)
 	}
 }
 
+void defineWinnersAndLosers(void)
+{
+	int j = 19, tiedTeams[20];
+	for (int i = 18; i >= 0; i--)
+	{
+		if (finalResultTable.dataTable[j][0] == finalResultTable.dataTable[i][0])
+		{
+			if (finalResultTable.dataTable[j][2] == finalResultTable.dataTable[i][2])
+			{
+				if (finalResultTable.dataTable[j][5] == finalResultTable.dataTable[i][5])
+				{
+					if (finalResultTable.dataTable[j][7] == finalResultTable.dataTable[i][7])
+					{	
+						printf("Há um empate entre os times ");					
+						for (int k = 0; k < 20; k++)
+						{
+							tiedTeams[k] = k;
+							printf("%s, ", finalResultTable.teamName[tiedTeams[k]]);
+						}
+					}
+					else if (finalResultTable.dataTable[j][7] > finalResultTable.dataTable[i][7])
+					{
+						strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
+					}
+					else
+					{
+						strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+					}
+				}
+				else if (finalResultTable.dataTable[j][5] > finalResultTable.dataTable[i][5])
+				{
+					strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
+				}
+				else
+				{
+					strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+				}	
+			}
+			else if (finalResultTable.dataTable[j][2] > finalResultTable.dataTable[i][2])
+			{
+				strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
+			}
+			else
+			{
+				strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+			}	
+		}
+		else if (finalResultTable.dataTable[j][0] > finalResultTable.dataTable[i][0])
+		{
+			strcpy(finalResultTable.champion, finalResultTable.teamName[j]);
+		}
+		else
+		{
+			strcpy(finalResultTable.champion, finalResultTable.teamName[i]);
+		}
+		j--;
+	}
+	for (int i = 19; i > 15; i--)
+	{
+		strcpy(finalResultTable.bestFour[19 - i], finalResultTable.teamName[i]);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		strcpy(finalResultTable.worstFour[i], finalResultTable.teamName[i]);
+	}
+}
+
 void reorderTeams()
 {
 	int rows = 20, columns = 9, k = 0, x = 0, temporary1;
@@ -158,7 +224,7 @@ void reorderTeams()
 	{
 		for (int j = i + 1; j < rows; j++)
 		{
-			if (finalResultTable.dataTable[i][k] > finalResultTable.dataTable[j][k])
+			if (finalResultTable.dataTable[i][k] > finalResultTable.dataTable[j][k]) // TODO: Call defineWinnersAndLosers here.
 			{
 				for (x = 0; x < 9; x++)
 				{
@@ -179,22 +245,9 @@ void reorderTeams()
 	}
 }
 
-void defineWinnersAndLosers(void)
-{
-	strcpy(finalResultTable.champion, finalResultTable.teamName[19]);
-	for (int i = 19; i > 15; i--)
-	{
-		strcpy(finalResultTable.bestFour[19 - i], finalResultTable.teamName[i]);
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		strcpy(finalResultTable.worstFour[i], finalResultTable.teamName[i]);
-	}
-}
-
 void printResults(void)
 {
-	printf("\nPos | Nome | P  | J  | V  | E  | D  | GP | GC | SG |\n");
+	printf("\nPos | Nome | P  | J  | V | E | D | GP  | GC  | SG  |\n");
 	for (int i = 19; i >= 0; i--)
 	{
 		printf("---------------------------------------------------+\n");
