@@ -1,7 +1,0 @@
-@mixin scaleEffect {
-  transition-duration: .2s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-}

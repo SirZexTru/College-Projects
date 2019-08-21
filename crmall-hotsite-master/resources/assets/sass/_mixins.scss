@@ -1,9 +1,0 @@
-@mixin grayscale($value: 100%)
-{
-  $percentage: $value + 0%;
-
-  -webkit-filter: #{"grayscale(#{$percentage})"};
-  -moz-filter: #{"grayscale(#{$percentage})"};
-  -o-filter: #{"grayscale(#{$percentage})"};
-  filter: #{"grayscale(#{$percentage})"};
-}
