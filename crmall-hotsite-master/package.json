@@ -30,7 +30,7 @@
     "i18next": "^9.0.0",
     "jquery-mask-plugin": "^1.14.11",
     "jquery-maskmoney": "^3.0.2",
-    "jquery-validation": "^1.19.0",
+    "jquery-validation": "^1.19.3",
     "jquery.2": "^1.0.0",
     "ladda": "^1.0.0",
     "moment": "^2.22.2",
